@@ -29,7 +29,7 @@
 				<button type="submit">Add Goal</button>
 			</form>
 
-			<div ng-repeat="goal in main.goals | toArray:true">
+			<div ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete'">
 				<div>{{goal.title}}</div>
 				<div>{{goal.complete}}</div>
 				<button ng-click="main.completeGoal(goal.$key)">{{goal.title}} complete</button>
