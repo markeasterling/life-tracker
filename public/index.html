@@ -12,10 +12,20 @@
 			<h1>{{main.heading}}</h1>
 
 			<form ng-submit="main.submitGoal()">
-				<input type="text" ng-model="main.title" placeholder="title">
-				<input type="text" ng-model="main.description" placeholder="description">
-				<input type="number" ng-model="main.points" placeholder="point value">
-				<input type="number" ng-model="main.length" placeholder="number of days">
+				<input type="text" ng-model="main.goalTitle" placeholder="title">
+				<input type="text" ng-model="main.goalDescription" placeholder="description">
+				<input type="number" ng-model="main.goalPoints" placeholder="point value">
+				<input type="number" ng-model="main.goalLength" placeholder="number of days">
+				<select name="importance" ng-model="main.goalImportance">
+					<option value="low">low</option>
+					<option value="normal" selected>normal</option>
+					<option value="high">high</option>
+				</select>
+				<select name="category" ng-model="main.goalCategory">
+					<option value="work">work</option>
+					<option value="physical">physical health</option>
+					<option value="personal" selected>personal enrichment</option>
+				</select>
 				<button type="submit">Add Goal</button>
 			</form>
 		</div>

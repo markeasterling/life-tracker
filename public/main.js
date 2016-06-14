@@ -12,10 +12,12 @@ angular.module("life", [])
   	main.heading = "Lifetracker";
 
   	main.submitGoal = function(){
-  		console.log(main.title)
-  		console.log(main.description)
-  		console.log(main.points)
-  		console.log(main.length)
+  		console.log(main.goalTitle)
+  		console.log(main.goalDescription)
+  		console.log(main.goalPoints)
+  		console.log(main.goalLength)
+      console.log(main.goalImportance)
+      console.log(main.goalCategory)
 
 
   	};
