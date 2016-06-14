@@ -10,6 +10,7 @@ angular.module("life", [])
   .controller("MainCtrl", function(){
   	main = this;
   	main.heading = "Lifetracker";
+    main.goals=[]
 
   	main.submitGoal = function(){
   		console.log(main.goalTitle)
@@ -18,8 +19,15 @@ angular.module("life", [])
   		console.log(main.goalLength)
       console.log(main.goalImportance)
       console.log(main.goalCategory)
-
-
+      main.goals.push({
+        "title": main.goalTitle,
+        "description": main.goalDescription,
+        "points": main.goalPoints,
+        "length": main.goalLength,
+        "importance": main.goalImportance,
+        "category": main.goalCategory
+      })
+      console.log(main.goals)
   	};
 
 
