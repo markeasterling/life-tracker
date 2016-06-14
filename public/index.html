@@ -28,10 +28,18 @@
 				</select>
 				<button type="submit">Add Goal</button>
 			</form>
+
+			<div ng-repeat="goal in main.goals | toArray:true">
+				<div>{{goal.title}}</div>
+				<div>{{goal.complete}}</div>
+				<button ng-click="main.completeGoal(goal.$key)">{{goal.title}} complete</button>
+			</div>
 		</div>
 	</div>
 	<script src="lib/angular/angular.min.js"></script>
 	<script src="lib/firebase/firebase.js"></script>
+	<script src="lib/angular-filter/dist/angular-filter.min.js"></script>
+
 
 	<script src="main.js"></script>
 </body>

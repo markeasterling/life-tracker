@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "angular": "^1.5.6",
-    "firebase": "^3.0.4"
+    "firebase": "^3.0.4",
+    "angular-filter": "^0.5.8"
   }
 }

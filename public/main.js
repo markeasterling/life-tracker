@@ -1,4 +1,4 @@
-angular.module("life", [])
+angular.module("life", ['angular.filter'])
 	.config(() => (
 		firebase.initializeApp({
     apiKey: "AIzaSyD-tzA7TfGK1BW2OkIajK0jb8CBibYpXW0",
@@ -7,37 +7,44 @@ angular.module("life", [])
     storageBucket: "life-tracker-e5c81.appspot.com",
   })))
 
-  .controller("MainCtrl", function($http){
-  	main = this;
-  	main.heading = "Lifetracker";
-    main.goals=[]
 
-  	main.submitGoal = function(){
-  		// console.log(main.goalTitle)
-  		// console.log(main.goalDescription)
-  		// console.log(main.goalPoints)
-  		// console.log(main.goalLength)
-    //   console.log(main.goalImportance)
-    //   console.log(main.goalCategory)
+  .controller("MainCtrl", function($timeout){
+    main = this;
+    main.heading = "Lifetracker";
+
+  const updateGoals = (snapshot) => (
+    $timeout().then(()=> (
+      main.goals = Object.assign(
+        {},
+        main.goals,
+        { [snapshot.key]: snapshot.val() }
+        )
+      ))
+    )
+
+    main.completeGoal = function (key) {
+      console.log(key)
+      return firebase.database().ref(`/goals/${key}`)
+        .transaction(goal => {
+          goal.complete = true
+          return goal
+        })
+    }
+
+    main.submitGoal = function (){
+
       firebase.database().ref('/goals/').push({
         "title": main.goalTitle,
         "description": main.goalDescription,
         "points": main.goalPoints,
         "length": main.goalLength,
         "importance": main.goalImportance,
-        "category": main.goalCategory
+        "category": main.goalCategory,
+        "complete": false
       })
 
-      // main.goals.push({
-      //   "title": main.goalTitle,
-      //   "description": main.goalDescription,
-      //   "points": main.goalPoints,
-      //   "length": main.goalLength,
-      //   "importance": main.goalImportance,
-      //   "category": main.goalCategory
-      // })
-      // console.log(main.goals)
   	};
 
-
+    firebase.database().ref('/goals/').on('child_added', updateGoals)
+    firebase.database().ref('/goals/').on('child_changed', updateGoals)
   });
