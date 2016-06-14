@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Lifetracker</title>
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+	<div ng-app="life">
+		<div ng-controller="MainCtrl as main">
+			<h1>{{main.heading}}</h1>
+
+			<form ng-submit="main.submitGoal()">
+				<input type="text" ng-model="main.title" placeholder="title">
+				<input type="text" ng-model="main.description" placeholder="description">
+				<input type="number" ng-model="main.points" placeholder="point value">
+				<input type="number" ng-model="main.length" placeholder="number of days">
+				<button type="submit">Add Goal</button>
+			</form>
+		</div>
+	</div>
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="lib/firebase/firebase.js"></script>
+
+	<script src="main.js"></script>
+</body>
+</html>

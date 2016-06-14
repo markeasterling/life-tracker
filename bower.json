@@ -1,0 +1,22 @@
+{
+  "name": "life-tracker",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Mark Easterling <marke.easterling@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/markeasterling/life-tracker",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.6",
+    "firebase": "^3.0.4"
+  }
+}
