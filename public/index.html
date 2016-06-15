@@ -32,8 +32,8 @@
 			<div ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete'">
 				<div ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
 				<div>{{goal.complete}}</div>
-				<div>{{goal.dateStarted}}</div>
-				<div>{{goal.dateEnded}}</div>
+				<div>start: {{goal.dateStarted}}</div>
+				<div>end: {{goal.dateEnded}}</div>
 				<button ng-click="main.completeGoal(goal.$key)">{{goal.title}} complete</button>
 			</div>
 

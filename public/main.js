@@ -12,6 +12,14 @@ angular.module("life", ['angular.filter'])
     main = this;
     main.heading = "Lifetracker";
 
+
+  const setCurrentTime = () => {
+    firebase.database().ref('/time/')
+      .set({"current time": Date.now()})
+      console.log(Date.now())
+  };
+  setCurrentTime();
+
   const updateGoals = (snapshot) => (
     $timeout().then(()=> (
       main.goals = Object.assign(
@@ -20,7 +28,7 @@ angular.module("life", ['angular.filter'])
         { [snapshot.key]: snapshot.val() }
         )
       ))
-    )
+    );
 
   main.completeGoal = function (key) {
     console.log(key)
@@ -29,14 +37,14 @@ angular.module("life", ['angular.filter'])
         goal.complete = true
         return goal
       })
-  }
+  };
 
   main.showGoal = function (key) {
     console.log(key)
     let current=main.goals[key]
     console.log(current)
     goalDisplay = `<div>Title: ${current.title}</div>`
-  }
+  };
 
     main.submitGoal = function (){
       let start = Date.now()
