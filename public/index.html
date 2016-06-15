@@ -28,12 +28,16 @@
 				</select>
 				<button type="submit">Add Goal</button>
 			</form>
-
+			<div>{{main.goalDisplay}}</div>
 			<div ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete'">
-				<div>{{goal.title}}</div>
+				<div ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
 				<div>{{goal.complete}}</div>
+				<div>{{goal.dateStarted}}</div>
+				<div>{{goal.dateEnded}}</div>
 				<button ng-click="main.completeGoal(goal.$key)">{{goal.title}} complete</button>
 			</div>
+
+
 		</div>
 	</div>
 	<script src="lib/angular/angular.min.js"></script>
