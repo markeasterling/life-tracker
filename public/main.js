@@ -11,17 +11,30 @@ angular.module("life", ['angular.filter'])
   .controller("MainCtrl", function($timeout){
     main = this;
     main.heading = "Lifetracker";
+    let userId;
 
 
   const setCurrentTime = () => {
     firebase.database().ref('/time/')
-      .set({"current time": Date.now()})
-      console.log(Date.now())
+      .update({"currentTime": Date.now()})
+      //console.log(Date.now())
   };
   setCurrentTime();
 
+//NOT SURE ABOUT THIS PART/////
+  // const updateTime = snapshot => (
+  //   $timeout().then(() => (
+  //     main.time = Object.assign(
+  //       {},
+  //       main.time,
+  //       { [snapshot.key]: snapshot.val()}
+  //     )
+  //   )).then(console.log(main.time.currentTime))
+  // )
+///////////////////////////////
+
   const updateGoals = (snapshot) => (
-    $timeout().then(()=> (
+    $timeout().then(() => (
       main.goals = Object.assign(
         {},
         main.goals,
@@ -46,24 +59,44 @@ angular.module("life", ['angular.filter'])
     goalDisplay = `<div>Title: ${current.title}</div>`
   };
 
-    main.submitGoal = function (){
-      let start = Date.now()
-      let end = start + main.goalLength * 86400000
+  main.submitGoal = function () {
+    let start = Date.now()
+    let end = start + main.goalLength * 86400000
 
-      firebase.database().ref('/goals/').push({
-        "title": main.goalTitle,
-        "description": main.goalDescription,
-        "points": main.goalPoints,
-        "length": main.goalLength,
-        "importance": main.goalImportance,
-        "category": main.goalCategory,
-        "complete": false,
-        "dateStarted": start,
-        "dateEnded": end
-      })
+    firebase.database().ref('/goals/').push({
+      "title": main.goalTitle,
+      "description": main.goalDescription,
+      "points": main.goalPoints,
+      "length": main.goalLength,
+      "importance": main.goalImportance,
+      "category": main.goalCategory,
+      "complete": false,
+      "dateStarted": start,
+      "dateEnded": end,
+      "userId": userId
+    })
+      console.log(userId)
+      setCurrentTime();
+	};
 
-  	};
+  main.login = function (email, password) {
+    console.log(email);
+    console.log(password);
+    firebase.auth().signInWithEmailAndPassword(email, password)
+  };
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        console.log("user id", user.uid)
+        console.log(user.getToken())
+        userId = user.uid
+
+    }
+  })
 
     firebase.database().ref('/goals/').on('child_added', updateGoals)
     firebase.database().ref('/goals/').on('child_changed', updateGoals)
+   /////////////////NOT SURE ABOUT THIS////////////
+    //firebase.database().ref('/time/').on('child_changed', updateTime)
+   /////////////////////////////////////////////////
   });

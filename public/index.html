@@ -11,6 +11,12 @@
 		<div ng-controller="MainCtrl as main">
 			<h1>{{main.heading}}</h1>
 
+			<form ng-submit="main.login(userEmail, userPassword)">
+				<input type="text" ng-model="userEmail" placeholder="email">
+				<input type="password" ng-model="userPassword" placeholder="password">
+				<button type="submit">Log In</button>
+			</form>
+
 			<form ng-submit="main.submitGoal()">
 				<input type="text" ng-model="main.goalTitle" placeholder="title">
 				<input type="text" ng-model="main.goalDescription" placeholder="description">
