@@ -34,8 +34,10 @@
 				</select>
 				<button type="submit">Add Goal</button>
 			</form>
+
 			<div>{{main.goalDisplay}}</div>
-			<div ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete'">
+
+			<div ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete' | where:{userId: main.currentUserId}">
 				<div ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
 				<div>{{goal.complete}}</div>
 				<div>start: {{goal.dateStarted}}</div>

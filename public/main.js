@@ -8,16 +8,18 @@ angular.module("life", ['angular.filter'])
   })))
 
 
-  .controller("MainCtrl", function($timeout){
+  .controller("MainCtrl", function($timeout, $scope){
     main = this;
     main.heading = "Lifetracker";
-    let userId;
+    //main.currentUserId= "zS0MHocQRcWgB14PmyH6VvP085I2"
+    let currentUserId = "zS0MHocQRcWgB14PmyH6VvP085I2";
+    //$scope.currentUserId = userId
 
 
   const setCurrentTime = () => {
     firebase.database().ref('/time/')
       .update({"currentTime": Date.now()})
-      //console.log(Date.now())
+      console.log(currentUserId)
   };
   setCurrentTime();
 
@@ -76,6 +78,7 @@ angular.module("life", ['angular.filter'])
       "userId": userId
     })
       console.log(userId)
+      console.log(currentUserId)
       setCurrentTime();
 	};
 
@@ -85,12 +88,15 @@ angular.module("life", ['angular.filter'])
     firebase.auth().signInWithEmailAndPassword(email, password)
   };
 
+
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        console.log("user id", user.uid)
-        console.log(user.getToken())
+        // console.log("user id", user.uid)
+        // console.log(user.getToken())
         userId = user.uid
-
+        console.log(userId)
+        main.currentUserId = userId
+        console.log(currentUserId)
     }
   })
 
