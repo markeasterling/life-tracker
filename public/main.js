@@ -95,11 +95,20 @@ angular.module("life", ['angular.filter'])
 
       if (main.time.currentTime > main.time.inceptionTime) {
         console.log(true)
-        //howconsole.log(main.goals)
         let goals = main.goals
-        //console.log(Object.keys(goals))
         for (obj in goals) {
+
           console.log("for:", goals[obj])
+          if (goals[obj].complete == true) {
+            console.log("that goal has been completed")
+            goals[obj].record.push(true)
+            goals[obj].complete = false
+
+          } else {
+            console.log("that goal has not been completed")
+            goals[obj].record.push(false)
+          }
+
         }
       } else {
         console.log(false)
