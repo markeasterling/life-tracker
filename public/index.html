@@ -10,12 +10,16 @@
 	<div ng-app="life">
 		<div ng-controller="MainCtrl as main">
 			<h1>{{main.heading}}</h1>
+			<div>welcome, {{main.currentUserEmail}}! {{main.time.currentTime}}</div>
 
 			<form ng-submit="main.login(userEmail, userPassword)">
 				<input type="text" ng-model="userEmail" placeholder="email">
 				<input type="password" ng-model="userPassword" placeholder="password">
 				<button type="submit">Log In</button>
 			</form>
+			<div>
+				<button ng-click="main.reset()">do the reset</button>
+			</div>
 
 			<form ng-submit="main.submitGoal()">
 				<input type="text" ng-model="main.goalTitle" placeholder="title">
@@ -35,7 +39,7 @@
 				<button type="submit">Add Goal</button>
 			</form>
 
-			<div>{{main.goalDisplay}}</div>
+			<div>{{goalDisplay}}</div>
 
 			<div ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete' | where:{userId: main.currentUserId}">
 				<div ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
