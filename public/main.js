@@ -75,6 +75,7 @@ angular.module("life", ['angular.filter'])
       "complete": false,
       "dateStarted": start,
       "dateEnded": end,
+      "record": ["true"],
       "userId": main.currentUserId
     })
       setCurrentTime();
@@ -94,6 +95,12 @@ angular.module("life", ['angular.filter'])
 
       if (main.time.currentTime > main.time.inceptionTime) {
         console.log(true)
+        //howconsole.log(main.goals)
+        let goals = main.goals
+        //console.log(Object.keys(goals))
+        for (obj in goals) {
+          console.log("for:", goals[obj])
+        }
       } else {
         console.log(false)
       }
