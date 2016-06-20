@@ -104,13 +104,19 @@ angular.module("life", ['angular.filter'])
             console.log("that goal has been completed")
             firebase.database().ref(`/goals/${obj}`)
               .transaction(goal => {
+                goal.record.push(goal.complete)
                 goal.complete = false
-
                 return goal
               })
           } else {
             console.log("that goal has not been completed")
-            goals[obj].record.push(false)
+            //goals[obj].record.push(false)
+            firebase.database().ref(`/goals/${obj}`)
+              .transaction(goal => {
+                goal.record.push(goal.complete)
+                goal.complete = false
+                return goal
+              })
           }
 
         }
