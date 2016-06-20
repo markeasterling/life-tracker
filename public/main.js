@@ -76,6 +76,7 @@ angular.module("life", ['angular.filter'])
       "dateStarted": start,
       "dateEnded": end,
       "record": ["true"],
+      "percentComplete": 0,
       "userId": main.currentUserId
     })
       setCurrentTime();
@@ -99,7 +100,7 @@ angular.module("life", ['angular.filter'])
         //let time = main.time
         firebase.database().ref(`/time/`)
               .transaction(time => {
-                time.inceptionTime = time.inceptionTime + 1
+                time.inceptionTime = time.inceptionTime + 1 // 86400000
                 return time
               })
 
@@ -107,17 +108,23 @@ angular.module("life", ['angular.filter'])
         for (obj in goals) {
 
           console.log("for:", goals[obj])
-          console.log(`goals${obj}`)
           if (goals[obj].complete == true) {
-            console.log("that goal has been completed")
+            //console.log("that goal has been completed")
             firebase.database().ref(`/goals/${obj}`)
               .transaction(goal => {
                 goal.record.push(goal.complete)
                 goal.complete = false
+                function numberTrue(value){
+                  return value == true
+                }
+                let trues = goal.record.filter(numberTrue)
+                goal.percentComplete = Math.round((trues.length / goal.record.length) * 100)
                 return goal
+
               })
+                //console.log(goal.record)
           } else {
-            console.log("that goal has not been completed")
+            // console.log("that goal has not been completed")
             //goals[obj].record.push(false)
             firebase.database().ref(`/goals/${obj}`)
               .transaction(goal => {
