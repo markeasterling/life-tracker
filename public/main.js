@@ -96,6 +96,14 @@ angular.module("life", ['angular.filter'])
       if (main.time.currentTime > main.time.inceptionTime) {
         console.log(true)
         let goals = main.goals
+        //let time = main.time
+        firebase.database().ref(`/time/`)
+              .transaction(time => {
+                time.inceptionTime = time.inceptionTime + 1
+                return time
+              })
+
+
         for (obj in goals) {
 
           console.log("for:", goals[obj])
