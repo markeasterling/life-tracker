@@ -53,14 +53,14 @@ angular.module("life", ['angular.filter'])
         return goal
       })
   };
-
-  main.showGoal = function (key) {
-    console.log(key)
-    let current=main.goals[key]
-    console.log(current)
-    goalDisplay = `<div>Title: ${current.title}</div>`
-  };
-
+//////non functioning///
+  // main.showGoal = function (key) {
+  //   console.log(key)
+  //   let current=main.goals[key]
+  //   console.log(current)
+  //   goalDisplay = `<div>Title: ${current.title}</div>`
+  // };
+/////////////////////
   main.submitGoal = function () {
     let start = Date.now()
     let end = start + main.goalLength * 86400000
@@ -79,7 +79,7 @@ angular.module("life", ['angular.filter'])
       "userId": main.currentUserId
     })
       setCurrentTime();
-      console.log(main.time)
+      //console.log(main.time)
 	};
 
   main.login = function (email, password) {
@@ -99,11 +99,15 @@ angular.module("life", ['angular.filter'])
         for (obj in goals) {
 
           console.log("for:", goals[obj])
+          console.log(`goals${obj}`)
           if (goals[obj].complete == true) {
             console.log("that goal has been completed")
-            goals[obj].record.push(true)
-            goals[obj].complete = false
+            firebase.database().ref(`/goals/${obj}`)
+              .transaction(goal => {
+                goal.complete = false
 
+                return goal
+              })
           } else {
             console.log("that goal has not been completed")
             goals[obj].record.push(false)
@@ -113,7 +117,6 @@ angular.module("life", ['angular.filter'])
       } else {
         console.log(false)
       }
-
     })
   }
 
