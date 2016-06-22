@@ -42,7 +42,7 @@ angular.module("life", ['angular.filter'])
         main.goals,
         { [snapshot.key]: snapshot.val() }
       )
-    ))
+    )).then(console.log)
   );
 
   main.completeGoal = function (key) {
@@ -54,6 +54,10 @@ angular.module("life", ['angular.filter'])
         return goal
       })
   };
+
+  main.deleteGoal = function (key) {
+    firebase.database().ref(`/goals/${key}`).remove()
+  }
 //////non functioning///
   // main.showGoal = function (key) {
   //   console.log(key)
@@ -161,80 +165,8 @@ angular.module("life", ['angular.filter'])
     }
   })
 
-
-
-  // let sortedData = firebase.database().ref(`/goals/`).orderByChild('percentComplete');
-  // console.log(sortedData)
-
-//     var w = 500,
-//         h = 100;
-
-//     var svg = d3.select(".chart")
-//       .append("svg")
-//       .attr("width", w)
-//       .attr("height", h);
-
-//     d3.json("bars.json", function(json) {
-
-//       var data = dataz.items
-
-//       var max_n = 0;
-//       for (var d in data) {
-//         max_n = Math.max(data[d].n, max_n);
-//       }
-
-//       var dx = w / max_n;
-//       var dy = h / data.length;
-
-//       // bars
-//       var bars = svg.selectAll(".bar")
-//         .data(data)
-//         .enter()
-//         .append("rect")
-//         .attr("class", function(d, i) {return "bar " + d.label;})
-//         .attr("x", function(d, i) {return 0;})
-//         .attr("y", function(d, i) {return dy*i;})
-//         .attr("width", function(d, i) {return dx*d.n})
-//         .attr("height", dy)
-//         .style("color", "green");
-
-//       // labels
-//       var text = svg.selectAll("text")
-//         .data(data)
-//         .enter()
-//         .append("text")
-//         .attr("class", function(d, i) {return "label " + d.label;})
-//         .attr("x", 5)
-//         .attr("y", function(d, i) {return dy*i + 15;})
-//         .text( function(d) {return d.label + " " + d.n  + "%";})
-//         .attr("font-size", "15px")
-//         .style("font-weight", "bold")
-//         .style("color", "white");
-//     });
-
-//     let dataz = {
-//   "items": [
-//     {
-//       "label": "ride bike",
-//       "n": 20
-//     },
-//     {
-//       "label": "oranges",
-//       "n": 79
-//     },
-//     {
-//       "label": "bananas",
-//       "n": 10
-//     },
-//     {
-//       "label": "plums",
-//       "n": 5
-//     },
-//   ]
-// }
-// console.log(dataz.items)
 main.loadGoals = function () {
-  console.log(main.currentUserId)
+  //console.log(main.currentUserId)
   let goals = main.goals
   let d3Obj = { "goals": []}
   for ( obj in goals ) {
@@ -245,7 +177,7 @@ main.loadGoals = function () {
       }
       d3Obj.goals.push(goalobj)
       // console.log(goalobj)
-      console.log(d3Obj)
+      //console.log(d3Obj)
     } else {
       console.log(false)
     }
@@ -260,7 +192,7 @@ main.loadGoals = function () {
       .attr("width", w)
       .attr("height", h);
 
-    d3.json("bars.json", function(json) {
+    //d3.json("bars.json", function(json) {
 
       var data = d3Obj.goals
 
@@ -294,36 +226,18 @@ main.loadGoals = function () {
         .attr("y", function(d, i) {return dy*i + 15;})
         .text( function(d) {return d.label + " " + d.n  + "%";})
         .attr("font-size", "15px")
-        .style("font-weight", "bold")
-        .style("color", "white");
-    });
+        //.style("font-weight", "bold")
+        //.style("color", "white");
+    //});
 
-    let dataz = {
-  "items": [
-    {
-      "label": "ride bike",
-      "n": 20
-    },
-    {
-      "label": "oranges",
-      "n": 79
-    },
-    {
-      "label": "bananas",
-      "n": 10
-    },
-    {
-      "label": "plums",
-      "n": 5
-    },
-  ]
-}
 }
 
 
 
+    firebase.database().ref('/goals/').on('child_removed', updateGoals)
     firebase.database().ref('/goals/').on('child_added', updateGoals)
     firebase.database().ref('/goals/').on('child_changed', updateGoals)
+    // firebase.database().ref('/goals/').on('child_moved', updateGoals)
    /////////////////NOT SURE ABOUT THIS////////////
     firebase.database().ref('/time/').on('child_changed', updateTime)
    /////////////////////////////////////////////////
