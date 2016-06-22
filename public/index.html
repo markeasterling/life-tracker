@@ -19,7 +19,11 @@
 			</form>
 			<div>
 				<button ng-click="main.reset()">do the reset</button>
-				<button ng-click="main.loadGoals()">load goals</button>
+				<button ng-click="main.loadAllGoals()">load goals</button>
+				<button ng-click="main.loadCategorizedGoals()">load cat. goals</button>
+				<button ng-click="main.loadPriorityGoals()">load prioritized goals</button>
+
+
 			</div>
 
 			<form ng-submit="main.submitGoal()">
@@ -46,15 +50,16 @@
 				<div ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
 				<div>{{goal.complete}}</div>
 
-				  <div style="width: 40px;">{{goal.percentComplete}}%</div>
+				  <div>{{goal.percentComplete}}%</div>
 
 				<button ng-click="main.completeGoal(goal.$key)">Complete For Today</button>
 				<button ng-click="main.deleteGoal(goal.$key)">Delete This Goal</button>
 			</div>
 
-				<div class="chart">
+				<div class="allGoalsChart"></div>
+				<div class="categoriesChart"></div>
+				<div class="priorityChart"></div>
 
-				</div>
 
 		</div>
 	</div>
