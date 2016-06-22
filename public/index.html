@@ -44,6 +44,11 @@
 				<button type="submit">Add Goal</button>
 			</form>
 
+				<div class="allGoalsChart"></div>
+				<div class="categoriesChart"></div>
+				<div class="priorityChart"></div>
+
+
 			<div>{{goalDisplay}}</div>
 
 			<div ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete' | where:{userId: main.currentUserId}">
@@ -56,9 +61,7 @@
 				<button ng-click="main.deleteGoal(goal.$key)">Delete This Goal</button>
 			</div>
 
-				<div class="allGoalsChart"></div>
-				<div class="categoriesChart"></div>
-				<div class="priorityChart"></div>
+
 
 
 		</div>

@@ -183,47 +183,53 @@ main.loadAllGoals = function () {
     }
   }
 
+d3.select(".allGoalsChart")
+  .selectAll("div")
+    .data(allGoals.goals)
+  .enter().append("div")
+    .style("width", function(d) { return d.n * 4 + "px"; })
+    .text(function(d) { return `${d.label}- ${d.n}%` });
 
-   var w = 500;
-       //h = data.length * 20;
+   // var w = 500;
+   //     //h = data.length * 20;
 
-    var svg = d3.select(".allGoalsChart")
-      .append("svg")
-      .attr("width", w)
-      //.attr("height", h);
+   //  var svg = d3.select(".allGoalsChart")
+   //    .append("svg")
+   //    .attr("width", w)
+   //    //.attr("height", h);
 
 
-      var data = allGoals.goals;
-      var h = data.length * 22;
-      var max_n = 0;
-      for (var d in data) {
-        max_n = Math.max(data[d].n, max_n);
-      }
+   //    var data = allGoals.goals;
+   //    var h = data.length * 22;
+   //    var max_n = 0;
+   //    for (var d in data) {
+   //      max_n = Math.max(data[d].n, max_n);
+   //    }
 
-      var dx = w / max_n;
-      var dy = h / data.length;
+   //    var dx = w / max_n;
+   //    var dy = h / data.length;
 
-      // bars
-      var bars = svg.selectAll(".bar")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("class", function(d, i) {return "bar " + d.label;})
-        .attr("x", function(d, i) {return 0;})
-        .attr("y", function(d, i) {return dy*i;})
-        .attr("width", function(d, i) {return 6*d.n})
-        .attr("height", 20)
+   //    // bars
+   //    var bars = svg.selectAll(".bar")
+   //      .data(data)
+   //      .enter()
+   //      .append("rect")
+   //      .attr("class", function(d, i) {return "bar " + d.label;})
+   //      .attr("x", function(d, i) {return 0;})
+   //      .attr("y", function(d, i) {return dy*i;})
+   //      .attr("width", function(d, i) {return 6*d.n})
+   //      .attr("height", 20)
 
-      // labels
-      var text = svg.selectAll("text")
-        .data(data)
-        .enter()
-        .append("text")
-        .attr("class", function(d, i) {return "label " + d.label;})
-        .attr("x", 5)
-        .attr("y", function(d, i) {return dy*i + 15;})
-        .text( function(d) {return d.label + " " + d.n  + "%";})
-        .attr("font-size", "15px")
+   //    // labels
+   //    var text = svg.selectAll("text")
+   //      .data(data)
+   //      .enter()
+   //      .append("text")
+   //      .attr("class", function(d, i) {return "label " + d.label;})
+   //      .attr("x", 5)
+   //      .attr("y", function(d, i) {return dy*i + 15;})
+   //      .text( function(d) {return d.label + " " + d.n  + "%";})
+   //      .attr("font-size", "15px")
 
 }
 
@@ -276,46 +282,53 @@ main.loadAllGoals = function () {
     catObj.goals.push(personalObj)
     console.log(catObj)
 
-    var w = 500;
-       //h = data.length * 20;
 
-    var svg = d3.select(".categoriesChart")
-      .append("svg")
-      .attr("width", w)
-      //.attr("height", h);
+    d3.select(".categoriesChart")
+  .selectAll("div")
+    .data(catObj.goals)
+  .enter().append("div")
+    .style("width", function(d) { return d.n * 4 + "px"; })
+    .text(function(d) { return `${d.label}- ${d.n}%` });
+    // var w = 500;
+    //    //h = data.length * 20;
+
+    // var svg = d3.select(".categoriesChart")
+    //   .append("svg")
+    //   .attr("width", w)
+    //   //.attr("height", h);
 
 
-      var data = catObj.goals;
-      var h = data.length * 22;
-      var max_n = 0;
-      for (var d in data) {
-        max_n = Math.max(data[d].n, max_n);
-      }
+    //   var data = catObj.goals;
+    //   var h = data.length * 22;
+    //   var max_n = 0;
+    //   for (var d in data) {
+    //     max_n = Math.max(data[d].n, max_n);
+    //   }
 
-      var dx = w / max_n;
-      var dy = h / data.length;
+    //   var dx = w / max_n;
+    //   var dy = h / data.length;
 
-      // bars
-      var bars = svg.selectAll(".bar")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("class", function(d, i) {return "bar " + d.label;})
-        .attr("x", function(d, i) {return 0;})
-        .attr("y", function(d, i) {return dy*i;})
-        .attr("width", function(d, i) {return 6*d.n})
-        .attr("height", 20)
+    //   // bars
+    //   var bars = svg.selectAll(".bar")
+    //     .data(data)
+    //     .enter()
+    //     .append("rect")
+    //     .attr("class", function(d, i) {return "bar " + d.label;})
+    //     .attr("x", function(d, i) {return 0;})
+    //     .attr("y", function(d, i) {return dy*i;})
+    //     .attr("width", function(d, i) {return 6*d.n})
+    //     .attr("height", 20)
 
-      // labels
-      var text = svg.selectAll("text")
-        .data(data)
-        .enter()
-        .append("text")
-        .attr("class", function(d, i) {return "label " + d.label;})
-        .attr("x", 5)
-        .attr("y", function(d, i) {return dy*i + 15;})
-        .text( function(d) {return d.label + " " + d.n  + "%";})
-        .attr("font-size", "15px")
+    //   // labels
+    //   var text = svg.selectAll("text")
+    //     .data(data)
+    //     .enter()
+    //     .append("text")
+    //     .attr("class", function(d, i) {return "label " + d.label;})
+    //     .attr("x", 5)
+    //     .attr("y", function(d, i) {return dy*i + 15;})
+    //     .text( function(d) {return d.label + " " + d.n  + "%";})
+    //     .attr("font-size", "15px")
 
   }
 
@@ -368,46 +381,53 @@ main.loadAllGoals = function () {
     priorityObj.goals.push(highObj)
     console.log(priorityObj)
 
-    var w = 500;
-       //h = data.length * 20;
+    d3.select(".priorityChart")
+  .selectAll("div")
+    .data(priorityObj.goals)
+  .enter().append("div")
+    .style("width", function(d) { return d.n * 4 + "px"; })
+    .text(function(d) { return `${d.label} priority- ${d.n}%` });
 
-    var svg = d3.select(".categoriesChart")
-      .append("svg")
-      .attr("width", w)
-      //.attr("height", h);
+    // var w = 500;
+    //    //h = data.length * 20;
+
+    // var svg = d3.select(".categoriesChart")
+    //   .append("svg")
+    //   .attr("width", w)
+    //   //.attr("height", h);
 
 
-      var data = priorityObj.goals;
-      var h = data.length * 22;
-      var max_n = 0;
-      for (var d in data) {
-        max_n = Math.max(data[d].n, max_n);
-      }
+    //   var data = priorityObj.goals;
+    //   var h = data.length * 22;
+    //   var max_n = 0;
+    //   for (var d in data) {
+    //     max_n = Math.max(data[d].n, max_n);
+    //   }
 
-      var dx = w / max_n;
-      var dy = h / data.length;
+    //   var dx = w / max_n;
+    //   var dy = h / data.length;
 
-      // bars
-      var bars = svg.selectAll(".bar")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("class", function(d, i) {return "bar " + d.label;})
-        .attr("x", function(d, i) {return 0;})
-        .attr("y", function(d, i) {return dy*i;})
-        .attr("width", function(d, i) {return 6*d.n})
-        .attr("height", 20)
+    //   // bars
+    //   var bars = svg.selectAll(".bar")
+    //     .data(data)
+    //     .enter()
+    //     .append("rect")
+    //     .attr("class", function(d, i) {return "bar " + d.label;})
+    //     .attr("x", function(d, i) {return 0;})
+    //     .attr("y", function(d, i) {return dy*i;})
+    //     .attr("width", function(d, i) {return 6*d.n})
+    //     .attr("height", 20)
 
-      // labels
-      var text = svg.selectAll("text")
-        .data(data)
-        .enter()
-        .append("text")
-        .attr("class", function(d, i) {return "label " + d.label;})
-        .attr("x", 5)
-        .attr("y", function(d, i) {return dy*i + 15;})
-        .text( function(d) {return d.label + " " + d.n  + "%";})
-        .attr("font-size", "15px")
+    //   // labels
+    //   var text = svg.selectAll("text")
+    //     .data(data)
+    //     .enter()
+    //     .append("text")
+    //     .attr("class", function(d, i) {return "label " + d.label;})
+    //     .attr("x", 5)
+    //     .attr("y", function(d, i) {return dy*i + 15;})
+    //     .text( function(d) {return d.label + " " + d.n  + "%";})
+    //     .attr("font-size", "15px")
 
   }
 
