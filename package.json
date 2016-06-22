@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/markeasterling/life-tracker#readme",
   "devDependencies": {
+    "d3": "^3.5.17",
     "http-server": "^0.9.0"
   }
 }

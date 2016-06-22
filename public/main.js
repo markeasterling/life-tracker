@@ -41,15 +41,16 @@ angular.module("life", ['angular.filter'])
         {},
         main.goals,
         { [snapshot.key]: snapshot.val() }
-        )
-      ))
-    );
+      )
+    ))
+  );
 
   main.completeGoal = function (key) {
     console.log(key)
     return firebase.database().ref(`/goals/${key}`)
       .transaction(goal => {
         goal.complete = true
+        goal.record.push(true)
         return goal
       })
   };
@@ -92,10 +93,10 @@ angular.module("life", ['angular.filter'])
   main.reset = function () {
     firebase.database().ref('/time/').once('value').then(function(snapshot) {
       main.time = snapshot.val()
-      console.log("main.time:", main.time)
+      //console.log("main.time:", main.time)
 
       if (main.time.currentTime > main.time.inceptionTime) {
-        console.log(true)
+        //console.log(true)
         let goals = main.goals
         //let time = main.time
         firebase.database().ref(`/time/`)
@@ -112,15 +113,17 @@ angular.module("life", ['angular.filter'])
             //console.log("that goal has been completed")
             firebase.database().ref(`/goals/${obj}`)
               .transaction(goal => {
-                goal.record.push(goal.complete)
-                goal.complete = false
                 function numberTrue(value){
                   return value == true
                 }
                 let trues = goal.record.filter(numberTrue)
-                goal.percentComplete = Math.round((trues.length / goal.record.length) * 100)
-                return goal
 
+                //goal.record.push(goal.complete)
+                goal.complete = false
+                goal.percentComplete = Math.round((trues.length / (goal.record.length - 1)) * 100)
+                console.log("true trues",trues.length)
+                console.log("true total",goal.record.length)
+                return goal
               })
                 //console.log(goal.record)
           } else {
@@ -128,12 +131,19 @@ angular.module("life", ['angular.filter'])
             //goals[obj].record.push(false)
             firebase.database().ref(`/goals/${obj}`)
               .transaction(goal => {
+                function numberTrue(value){
+                  return value == true
+                }
+                let trues = goal.record.filter(numberTrue)
+
                 goal.record.push(goal.complete)
                 goal.complete = false
+                goal.percentComplete = Math.round((trues.length / (goal.record.length - 1)) * 100)
+                console.log("false trues",trues.length)
+                console.log("false total",goal.record.length)
                 return goal
               })
           }
-
         }
       } else {
         console.log(false)
@@ -148,11 +158,167 @@ angular.module("life", ['angular.filter'])
         console.log(user.email)
         main.currentUserId = user.uid
         main.currentUserEmail= user.email
-
-
     }
   })
 
+
+
+  // let sortedData = firebase.database().ref(`/goals/`).orderByChild('percentComplete');
+  // console.log(sortedData)
+
+//     var w = 500,
+//         h = 100;
+
+//     var svg = d3.select(".chart")
+//       .append("svg")
+//       .attr("width", w)
+//       .attr("height", h);
+
+//     d3.json("bars.json", function(json) {
+
+//       var data = dataz.items
+
+//       var max_n = 0;
+//       for (var d in data) {
+//         max_n = Math.max(data[d].n, max_n);
+//       }
+
+//       var dx = w / max_n;
+//       var dy = h / data.length;
+
+//       // bars
+//       var bars = svg.selectAll(".bar")
+//         .data(data)
+//         .enter()
+//         .append("rect")
+//         .attr("class", function(d, i) {return "bar " + d.label;})
+//         .attr("x", function(d, i) {return 0;})
+//         .attr("y", function(d, i) {return dy*i;})
+//         .attr("width", function(d, i) {return dx*d.n})
+//         .attr("height", dy)
+//         .style("color", "green");
+
+//       // labels
+//       var text = svg.selectAll("text")
+//         .data(data)
+//         .enter()
+//         .append("text")
+//         .attr("class", function(d, i) {return "label " + d.label;})
+//         .attr("x", 5)
+//         .attr("y", function(d, i) {return dy*i + 15;})
+//         .text( function(d) {return d.label + " " + d.n  + "%";})
+//         .attr("font-size", "15px")
+//         .style("font-weight", "bold")
+//         .style("color", "white");
+//     });
+
+//     let dataz = {
+//   "items": [
+//     {
+//       "label": "ride bike",
+//       "n": 20
+//     },
+//     {
+//       "label": "oranges",
+//       "n": 79
+//     },
+//     {
+//       "label": "bananas",
+//       "n": 10
+//     },
+//     {
+//       "label": "plums",
+//       "n": 5
+//     },
+//   ]
+// }
+// console.log(dataz.items)
+main.loadGoals = function () {
+  console.log(main.currentUserId)
+  let goals = main.goals
+  let d3Obj = { "goals": []}
+  for ( obj in goals ) {
+    if ( goals[obj].userId == main.currentUserId ) {
+      let goalobj = {
+        "label": goals[obj].title,
+        "n": goals[obj].percentComplete
+      }
+      d3Obj.goals.push(goalobj)
+      // console.log(goalobj)
+      console.log(d3Obj)
+    } else {
+      console.log(false)
+    }
+  }
+
+
+   var w = 500,
+        h = 100;
+
+    var svg = d3.select(".chart")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+
+    d3.json("bars.json", function(json) {
+
+      var data = d3Obj.goals
+
+      var max_n = 0;
+      for (var d in data) {
+        max_n = Math.max(data[d].n, max_n);
+      }
+
+      var dx = w / max_n;
+      var dy = h / data.length;
+
+      // bars
+      var bars = svg.selectAll(".bar")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("class", function(d, i) {return "bar " + d.label;})
+        .attr("x", function(d, i) {return 0;})
+        .attr("y", function(d, i) {return dy*i;})
+        .attr("width", function(d, i) {return 10*d.n})
+        .attr("height", dy)
+        .style("color", "green");
+
+      // labels
+      var text = svg.selectAll("text")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("class", function(d, i) {return "label " + d.label;})
+        .attr("x", 5)
+        .attr("y", function(d, i) {return dy*i + 15;})
+        .text( function(d) {return d.label + " " + d.n  + "%";})
+        .attr("font-size", "15px")
+        .style("font-weight", "bold")
+        .style("color", "white");
+    });
+
+    let dataz = {
+  "items": [
+    {
+      "label": "ride bike",
+      "n": 20
+    },
+    {
+      "label": "oranges",
+      "n": 79
+    },
+    {
+      "label": "bananas",
+      "n": 10
+    },
+    {
+      "label": "plums",
+      "n": 5
+    },
+  ]
+}
+}
 
 
 
