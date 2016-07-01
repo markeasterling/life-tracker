@@ -188,7 +188,7 @@ d3.select(".allGoalsChart")
     .data(allGoals.goals)
   .enter().append("div")
     .style("width", function(d) { return d.n * 4 + "px"; })
-    .text(function(d) { return `${d.label}- ${d.n}%` });
+    .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
 
    // var w = 500;
    //     //h = data.length * 20;
@@ -288,7 +288,7 @@ d3.select(".allGoalsChart")
     .data(catObj.goals)
   .enter().append("div")
     .style("width", function(d) { return d.n * 4 + "px"; })
-    .text(function(d) { return `${d.label}- ${d.n}%` });
+    .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
     // var w = 500;
     //    //h = data.length * 20;
 
@@ -386,7 +386,7 @@ d3.select(".allGoalsChart")
     .data(priorityObj.goals)
   .enter().append("div")
     .style("width", function(d) { return d.n * 4 + "px"; })
-    .text(function(d) { return `${d.label} priority- ${d.n}%` });
+    .text(function(d) { return `${d.label} priority- ${Math.floor(d.n)}%` });
 
     // var w = 500;
     //    //h = data.length * 20;
