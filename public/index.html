@@ -10,13 +10,16 @@
 
 </head>
 <body>
-	<div ng-app="life">
-		<div ng-view></div>
+	<div class="outerbox" ng-app="life">
 		<div ng-controller="MainCtrl as main">
 
-			<h1>{{main.heading}}</h1>
-			<button class="btn" ng-click="main.logout()">sign out</button>
-			<div>welcome, {{main.currentUserEmail}}! {{main.time.currentTime}}</div>
+			<nav class="navbar">
+				<h1>{{main.heading}}</h1>
+				<div ng-hide="main.currentUserId == undefined">
+					<div >welcome, {{main.currentUserEmail}}! {{main.time.currentTime}}</div>
+					<button class="btn-xs btn" ng-click="main.logout()">sign out</button>
+				</div>
+			</nav>
 
 			<div ng-show="main.currentUserId == undefined">
 				<form ng-submit="main.login(userEmail, userPassword)">
@@ -25,44 +28,41 @@
 					<button type="submit">Log In</button>
 				</form>
 			</div>
-			<div>
-				<button ng-click="main.reset()">do the reset</button>
-				<!-- <button ng-click="main.loadAllGoals()">load goals</button>
-				<button ng-click="main.loadCategorizedGoals()">load cat. goals</button>
-				<button ng-click="main.loadPriorityGoals()">load prioritized goals</button> -->
-				<button ng-click="main.loadCharts()">show charts</button>
 
-
-
+			<div ng-hide="main.currentUserId == undefined">
+				<button class="btn btn-danger btn-sm " ng-click="main.reset()">do the reset</button>
+				<button class="btn btn-sm btn-custom" ng-click="main.loadCharts()">show charts</button>
+				<button class="btn btn-sm btn-custom" ng-click="showgoalform = true" ng-hide="showgoalform">add a new goal</button>
 			</div>
 
-			<button ng-click="showgoalform = true" ng-hide="showgoalform">add a new goal</button>
 			<div ng-show="showgoalform">
-				<form ng-submit="main.submitGoal()">
-					<input type="text" ng-model="main.goalTitle" placeholder="title">
-					<input type="text" ng-model="main.goalDescription" placeholder="description">
-					<!-- <input type="number" ng-model="main.goalPoints" placeholder="point value"> -->
-					<!-- <input type="number" ng-model="main.goalLength" placeholder="number of days"> -->
-					<select name="importance" ng-model="main.goalImportance">
-						<option value="low">low</option>
-						<option value="normal">normal</option>
-						<option value="high">high</option>
-					</select>
-					<select name="category" ng-model="main.goalCategory">
-						<option value="work">work</option>
-						<option value="physical">physical health</option>
-						<option value="personal">personal enrichment</option>
-					</select>
-					<select name="frequency" ng-model="main.goalFrequency">
-						<option value="daily">Daily</option>
-						<option value="weekdays">Weekdays</option>
-						<option value="weekends">Weekends</option>
-						<option value="three">Thrice a week</option>
-						<option value="two">Twice a week</option>
-						<option value="one">Once a week</option>
-					</select>
-					<button type="submit">Add Goal</button>
-				</form>
+				<div class="form-inline">
+					<form ng-submit="main.submitGoal()">
+						<input class="form-control" type="text" ng-model="main.goalTitle" placeholder="title">
+						<input class="form-control" type="text" ng-model="main.goalDescription" placeholder="description">
+						<!-- <input type="number" ng-model="main.goalPoints" placeholder="point value"> -->
+						<!-- <input type="number" ng-model="main.goalLength" placeholder="number of days"> -->
+						<select class="form-control" name="importance" ng-model="main.goalImportance">
+							<option value="low">low</option>
+							<option value="normal">normal</option>
+							<option value="high">high</option>
+						</select>
+						<select class="form-control" name="category" ng-model="main.goalCategory">
+							<option value="work">work</option>
+							<option value="physical">physical health</option>
+							<option value="personal">personal enrichment</option>
+						</select>
+						<select class="form-control" name="frequency" ng-model="main.goalFrequency">
+							<option value="daily">Daily</option>
+							<option value="weekdays">Weekdays</option>
+							<option value="weekends">Weekends</option>
+							<option value="three">Thrice a week</option>
+							<option value="two">Twice a week</option>
+							<option value="one">Once a week</option>
+						</select>
+						<button  class="btn btn-sm btn-custom" type="submit">Add Goal</button>
+					</form>
+				</div>
 			</div>
 				<!-- <div>All Goals</div> -->
 				<p class="allGoalsChart"></p>
@@ -72,16 +72,16 @@
 				<p class="priorityChart"></p>
 
 
-			<div>{{goalDisplay}}</div>
+			<div class="container-fluid">
+				<div class="goalbox col-xs-3" ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete' | where:{userId: main.currentUserId}">
+					<div class="goaltitle" ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
+					<div>Completed Today? {{goal.complete}}</div>
 
-			<div ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete' | where:{userId: main.currentUserId}">
-				<div ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
-				<div>Completed Today? {{goal.complete}}</div>
+					  <div>{{goal.percentComplete}}%</div>
 
-				  <div>{{goal.percentComplete}}%</div>
-
-				<button ng-click="main.completeGoal(goal.$key)">Complete For Today</button>
-				<button ng-click="main.deleteGoal(goal.$key)">Delete This Goal</button>
+					<button class="btn btn-xs btn-custom" ng-click="main.completeGoal(goal.$key)">Complete For Today</button>
+					<button class="btn btn-xs btn-custom" ng-click="main.deleteGoal(goal.$key)">Delete This Goal</button>
+				</div>
 			</div>
 
 

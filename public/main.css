@@ -1,5 +1,5 @@
 body {
-	font-family: sans-serif;
+	box-sizing: border-box;
 }
 
 h1 {
@@ -38,3 +38,36 @@ h1 {
   color: white;
   border-radius: 4px;
 }
+
+.goalbox {
+  border: 3px solid #31627a ;
+  margin: 4px;
+  padding: 2px;
+  border-radius: 4px;
+  background-color: #CFD1D1;
+}
+
+.goaltitle {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.outerbox {
+  background-color: #bbbbbb;
+}
+
+.navbar {
+  background-color: #A7BDC4;
+  margin: 2px;
+  border-radius: 10px;
+  border: 5px solid gray;
+  padding: 5px;
+}
+
+.btn-custom {
+  background-color: #31627a;
+  border-color: #31627a;
+  color: #fff;
+}
+
+
