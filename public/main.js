@@ -1,4 +1,4 @@
-angular.module("life", ['angular.filter'])
+angular.module("life", ['angular.filter', 'ngRoute'])
 	.config(() => (
 		firebase.initializeApp({
     apiKey: "AIzaSyD-tzA7TfGK1BW2OkIajK0jb8CBibYpXW0",
@@ -7,10 +7,46 @@ angular.module("life", ['angular.filter'])
     storageBucket: "life-tracker-e5c81.appspot.com",
   })))
 
+  .controller("GoalCtrl", function($scope, $location){
+    goal = this;
+    goal.heading = "Add a New Goal"
 
-  .controller("MainCtrl", function($timeout, $scope){
+    console.log("I'm working")
+    //$scope.form = {}
+    //console.log($scope.form)
+
+
+
+
+      goal.submitGoal = function () {
+        console.log(form.addGoal.title)
+      //let start = Date.now()
+      //let end = start + goal.goalLength * 86400000
+      //console.log(goal.goalTitle)
+
+      // firebase.database().ref('/goals/').push({
+      //   "title": goal.goalTitle,
+      //   "description": goal.goalDescription,
+      //   // "points": goal.goalPoints,
+      //   // "length": goal.goalLength,
+      //   "importance": goal.goalImportance,
+      //   "category": goal.goalCategory,
+      //   "frequency": goal.goalFrequency,
+      //   "complete": false,
+      //   //"dateStarted": start,
+      //   //"dateEnded": end,
+      //   "record": ["true"],
+      //   "percentComplete": 0,
+      //   "userId": goal.currentUserId
+      // })
+
+    };
+  })
+
+  .controller("MainCtrl", function($timeout, $scope, $location){
     main = this;
     main.heading = "Lifetracker";
+    main.loginHeader = "login";
     //main.currentUserId= "zS0MHocQRcWgB14PmyH6VvP085I2"
     //let currentUserId;
     //$scope.currentUserId = userId
@@ -19,7 +55,7 @@ angular.module("life", ['angular.filter'])
   const setCurrentTime = () => {
     firebase.database().ref('/time/')
       .update({"currentTime": Date.now()})
-      //console.log(currentUserId)
+      console.log(main.currentUserId)
   };
   setCurrentTime();
 
@@ -67,32 +103,54 @@ angular.module("life", ['angular.filter'])
   // };
 /////////////////////
   main.submitGoal = function () {
-    let start = Date.now()
-    let end = start + main.goalLength * 86400000
+    //let start = Date.now()
+    //let end = start + main.goalLength * 86400000
 
     firebase.database().ref('/goals/').push({
       "title": main.goalTitle,
       "description": main.goalDescription,
-      "points": main.goalPoints,
-      "length": main.goalLength,
+      // "points": main.goalPoints,
+      // "length": main.goalLength,
       "importance": main.goalImportance,
       "category": main.goalCategory,
+      "frequency": main.goalFrequency,
       "complete": false,
-      "dateStarted": start,
-      "dateEnded": end,
+      //"dateStarted": start,
+      //"dateEnded": end,
       "record": ["true"],
       "percentComplete": 0,
       "userId": main.currentUserId
     })
+      // $location.path('/login')
       setCurrentTime();
       //console.log(main.time)
 	};
+
+  main.addNewGoal = function () {
+    // MODAL MADNESS
+    // ModalService.showModal({
+    //         templateUrl: 'addgoal.html',
+    //         controller: "GoalCtrl"
+    //     })
+    // .then(function(modal) {
+    //         modal.element.modal();
+    //         modal.close.then(function(result) {
+    //             $scope.message = "You said " + result;
+    //         });
+    //     });
+  }
 
   main.login = function (email, password) {
     console.log(email);
     console.log(password);
     firebase.auth().signInWithEmailAndPassword(email, password)
   };
+
+  main.logout = function () {
+    firebase.auth().signOut().then(function(){console.log("sign out success")
+    })
+    main.currentUserId = undefined
+  }
 
   main.reset = function () {
     firebase.database().ref('/time/').once('value').then(function(snapshot) {
@@ -108,7 +166,6 @@ angular.module("life", ['angular.filter'])
                 time.inceptionTime = time.inceptionTime + 1 // 86400000
                 return time
               })
-
 
         for (obj in goals) {
 
@@ -165,30 +222,30 @@ angular.module("life", ['angular.filter'])
     }
   })
 
-main.loadAllGoals = function () {
-  //console.log(main.currentUserId)
-  let goals = main.goals
-  let allGoals = { "goals": []}
-  for ( obj in goals ) {
-    if ( goals[obj].userId == main.currentUserId ) {
-      let goalobj = {
-        "label": goals[obj].title,
-        "n": goals[obj].percentComplete
+  main.loadAllGoals = function () {
+    //console.log(main.currentUserId)
+    let goals = main.goals
+    let allGoals = { "goals": []}
+    for ( obj in goals ) {
+      if ( goals[obj].userId == main.currentUserId ) {
+        let goalobj = {
+          "label": goals[obj].title,
+          "n": goals[obj].percentComplete
+        }
+        allGoals.goals.push(goalobj)
+        // console.log(goalobj)
+        //console.log(allGoals)
+      } else {
+        console.log(false)
       }
-      allGoals.goals.push(goalobj)
-      // console.log(goalobj)
-      //console.log(allGoals)
-    } else {
-      console.log(false)
     }
-  }
 
-d3.select(".allGoalsChart")
-  .selectAll("div")
-    .data(allGoals.goals)
-  .enter().append("div")
-    .style("width", function(d) { return d.n * 4 + "px"; })
-    .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
+  d3.select(".allGoalsChart")
+    .selectAll("div")
+      .data(allGoals.goals)
+    .enter().append("div")
+      .style("width", function(d) { return d.n * 4 + "px"; })
+      .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
 
    // var w = 500;
    //     //h = data.length * 20;
