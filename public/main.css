@@ -52,6 +52,21 @@ h1 {
   text-decoration: underline;
 }
 
+.goalDescription {
+  font-style: italic;
+  font-size: 10px;
+}
+
+.button-box {
+  margin-left: 4px;
+  margin-top: 8px;
+}
+
+.btn-box {
+  margin-top: 5px;
+
+}
+
 .outerbox {
   background-color: #bbbbbb;
 }
@@ -64,10 +79,25 @@ h1 {
   padding: 5px;
 }
 
+.nav-left {
+  float: left;
+}
+
+.nav-right {
+  float: right;
+  margin-top: 25px;
+}
+
 .btn-custom {
   background-color: #31627a;
   border-color: #31627a;
   color: #fff;
 }
+
+.goal-form,
+.chart-div {
+  margin: 10px 0 0 19px;
+}
+
 
 
