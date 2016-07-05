@@ -61,12 +61,12 @@
 							<option value="personal">personal enrichment</option>
 						</select>
 						<label>Frequency: </label><select class="form-control input-sm" name="frequency" ng-model="main.goalFrequency">
-							<option value="daily">Daily</option>
-							<option value="weekdays">Weekdays</option>
-							<option value="weekends">Weekends</option>
-							<option value="three">Thrice a week</option>
-							<option value="two">Twice a week</option>
-							<option value="one">Once a week</option>
+							<option value=1>Daily</option>
+							<option value=0.71>Weekdays</option>
+							<option value=0.29>Weekends</option>
+							<option value=0.42>Thrice a week</option>
+							<option value=0.28>Twice a week</option>
+							<option value=0.14>Once a week</option>
 						</select>
 						<button  class="btn btn-sm btn-custom" type="submit">Add Goal</button>
 					</form>
@@ -91,6 +91,13 @@
 					<div class="goalDescription">{{goal.description}}</div>
 					<div>Completed Today? {{goal.complete}}</div>
 					<div>{{goal.percentComplete}}%</div>
+					<div>{{goal.goalFrequency}}</div>
+					<div ng-show="goal.frequency == 1">everyday</div>
+					<div ng-show="goal.frequency == 0.71">weekdays</div>
+					<div ng-show="goal.frequency == 0.42">thrice a week</div>
+					<div ng-show="goal.frequency == 0.28">twice a week</div>
+					<div ng-show="goal.frequency == 0.14">once a week</div>
+					<div ng-show="goal.frequency == 0.29">weekends</div>
 					<button class="btn btn-xs btn-custom" ng-click="main.completeGoal(goal.$key)">Complete For Today</button>
 					<button class="btn btn-xs btn-custom" ng-click="main.deleteGoal(goal.$key)">Delete</button>
 				</div>
