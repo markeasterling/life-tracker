@@ -7,41 +7,41 @@ angular.module("life", ['angular.filter', 'ngRoute'])
     storageBucket: "life-tracker-e5c81.appspot.com",
   })))
 
-  .controller("GoalCtrl", function($scope, $location){
-    goal = this;
-    goal.heading = "Add a New Goal"
+  // .controller("GoalCtrl", function($scope, $location){
+  //   goal = this;
+  //   goal.heading = "Add a New Goal"
 
-    console.log("I'm working")
-    //$scope.form = {}
-    //console.log($scope.form)
-
-
+  //   console.log("I'm working")
+  //   //$scope.form = {}
+  //   //console.log($scope.form)
 
 
-      goal.submitGoal = function () {
-        console.log(form.addGoal.title)
-      //let start = Date.now()
-      //let end = start + goal.goalLength * 86400000
-      //console.log(goal.goalTitle)
 
-      // firebase.database().ref('/goals/').push({
-      //   "title": goal.goalTitle,
-      //   "description": goal.goalDescription,
-      //   // "points": goal.goalPoints,
-      //   // "length": goal.goalLength,
-      //   "importance": goal.goalImportance,
-      //   "category": goal.goalCategory,
-      //   "frequency": goal.goalFrequency,
-      //   "complete": false,
-      //   //"dateStarted": start,
-      //   //"dateEnded": end,
-      //   "record": ["true"],
-      //   "percentComplete": 0,
-      //   "userId": goal.currentUserId
-      // })
 
-    };
-  })
+  //     goal.submitGoal = function () {
+  //       console.log(form.addGoal.title)
+  //     //let start = Date.now()
+  //     //let end = start + goal.goalLength * 86400000
+  //     //console.log(goal.goalTitle)
+
+  //     // firebase.database().ref('/goals/').push({
+  //     //   "title": goal.goalTitle,
+  //     //   "description": goal.goalDescription,
+  //     //   // "points": goal.goalPoints,
+  //     //   // "length": goal.goalLength,
+  //     //   "importance": goal.goalImportance,
+  //     //   "category": goal.goalCategory,
+  //     //   "frequency": goal.goalFrequency,
+  //     //   "complete": false,
+  //     //   //"dateStarted": start,
+  //     //   //"dateEnded": end,
+  //     //   "record": ["true"],
+  //     //   "percentComplete": 0,
+  //     //   "userId": goal.currentUserId
+  //     // })
+
+  //   };
+  // })
 
   .controller("MainCtrl", function($timeout, $scope, $location){
     main = this;
@@ -222,270 +222,150 @@ angular.module("life", ['angular.filter', 'ngRoute'])
     }
   })
 
-  main.loadAllGoals = function () {
-    //console.log(main.currentUserId)
-    let goals = main.goals
-    let allGoals = { "goals": []}
-    for ( obj in goals ) {
-      if ( goals[obj].userId == main.currentUserId ) {
-        let goalobj = {
-          "label": goals[obj].title,
-          "n": goals[obj].percentComplete
+  main.loadCharts = function() {
+    main.loadAllGoals = function () {
+      //console.log(main.currentUserId)
+      let goals = main.goals
+      let allGoals = { "goals": []}
+      for ( obj in goals ) {
+        if ( goals[obj].userId == main.currentUserId ) {
+          let goalobj = {
+            "label": goals[obj].title,
+            "n": goals[obj].percentComplete
+          }
+          allGoals.goals.push(goalobj)
+          // console.log(goalobj)
+          //console.log(allGoals)
+        } else {
+          console.log(false)
         }
-        allGoals.goals.push(goalobj)
-        // console.log(goalobj)
-        //console.log(allGoals)
-      } else {
-        console.log(false)
       }
+
+      d3.select(".allGoalsChart")
+        .selectAll("div")
+          .data(allGoals.goals)
+        .enter().append("div")
+          .style("width", function(d) { return d.n * 4 + "px"; })
+          .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
     }
 
-  d3.select(".allGoalsChart")
+    main.loadCategorizedGoals = function () {
+      let goals = main.goals;
+      let catObj = { "goals": [] };
+      let physicalArray = [];
+      let workArray = [];
+      let personalArray = [];
+      let physicalObj
+      let workObj
+      let personalObj
+
+
+      for (obj in goals) {
+        if (goals[obj].category == "physical" && goals[obj].userId == main.currentUserId) {
+          physicalArray.push(goals[obj].percentComplete)
+          let percentArray = physicalArray.reduce((a, b) => a + b, 0);
+          let avg = percentArray/physicalArray.length
+          console.log(avg)
+          console.log(physicalArray)
+          physicalObj = {
+            "label": "physical",
+            "n": avg
+          }
+        } else if (goals[obj].category == "work" && goals[obj].userId == main.currentUserId) {
+          workArray.push(goals[obj].percentComplete)
+          let percentArray = workArray.reduce((a, b) => a + b, 0);
+          let avg = percentArray/workArray.length
+          console.log(avg)
+          console.log(workArray)
+          workObj = {
+            "label": "work",
+            "n": avg
+          }
+        } else if (goals[obj].category == "personal" && goals[obj].userId == main.currentUserId) {
+          personalArray.push(goals[obj].percentComplete)
+          let percentArray = personalArray.reduce((a, b) => a + b, 0);
+          let avg = percentArray/personalArray.length
+          console.log(avg)
+          console.log(personalArray)
+          personalObj = {
+            "label": "personal",
+            "n": avg
+          }
+        }
+      }
+      catObj.goals.push(physicalObj)
+      catObj.goals.push(workObj)
+      catObj.goals.push(personalObj)
+      console.log(catObj)
+
+
+      d3.select(".categoriesChart")
     .selectAll("div")
-      .data(allGoals.goals)
+      .data(catObj.goals)
     .enter().append("div")
       .style("width", function(d) { return d.n * 4 + "px"; })
       .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
+    }
 
-   // var w = 500;
-   //     //h = data.length * 20;
-
-   //  var svg = d3.select(".allGoalsChart")
-   //    .append("svg")
-   //    .attr("width", w)
-   //    //.attr("height", h);
-
-
-   //    var data = allGoals.goals;
-   //    var h = data.length * 22;
-   //    var max_n = 0;
-   //    for (var d in data) {
-   //      max_n = Math.max(data[d].n, max_n);
-   //    }
-
-   //    var dx = w / max_n;
-   //    var dy = h / data.length;
-
-   //    // bars
-   //    var bars = svg.selectAll(".bar")
-   //      .data(data)
-   //      .enter()
-   //      .append("rect")
-   //      .attr("class", function(d, i) {return "bar " + d.label;})
-   //      .attr("x", function(d, i) {return 0;})
-   //      .attr("y", function(d, i) {return dy*i;})
-   //      .attr("width", function(d, i) {return 6*d.n})
-   //      .attr("height", 20)
-
-   //    // labels
-   //    var text = svg.selectAll("text")
-   //      .data(data)
-   //      .enter()
-   //      .append("text")
-   //      .attr("class", function(d, i) {return "label " + d.label;})
-   //      .attr("x", 5)
-   //      .attr("y", function(d, i) {return dy*i + 15;})
-   //      .text( function(d) {return d.label + " " + d.n  + "%";})
-   //      .attr("font-size", "15px")
-
-}
-
-  main.loadCategorizedGoals = function () {
-    let goals = main.goals;
-    let catObj = { "goals": [] };
-    let physicalArray = [];
-    let workArray = [];
-    let personalArray = [];
-    let physicalObj
-    let workObj
-    let personalObj
+    main.loadPriorityGoals = function () {
+      let goals = main.goals;
+      let priorityObj = { "goals": [] };
+      let lowArray = [];
+      let normalArray = [];
+      let highArray = [];
+      let lowObj
+      let normalObj
+      let highObj
 
 
-    for (obj in goals) {
-      if (goals[obj].category == "physical" && goals[obj].userId == main.currentUserId) {
-        physicalArray.push(goals[obj].percentComplete)
-        let percentArray = physicalArray.reduce((a, b) => a + b, 0);
-        let avg = percentArray/physicalArray.length
-        console.log(avg)
-        console.log(physicalArray)
-        physicalObj = {
-          "label": "physical",
-          "n": avg
-        }
-      } else if (goals[obj].category == "work" && goals[obj].userId == main.currentUserId) {
-        workArray.push(goals[obj].percentComplete)
-        let percentArray = workArray.reduce((a, b) => a + b, 0);
-        let avg = percentArray/workArray.length
-        console.log(avg)
-        console.log(workArray)
-        workObj = {
-          "label": "work",
-          "n": avg
-        }
-      } else if (goals[obj].category == "personal" && goals[obj].userId == main.currentUserId) {
-        personalArray.push(goals[obj].percentComplete)
-        let percentArray = personalArray.reduce((a, b) => a + b, 0);
-        let avg = percentArray/personalArray.length
-        console.log(avg)
-        console.log(personalArray)
-        personalObj = {
-          "label": "personal",
-          "n": avg
+      for (obj in goals) {
+        if (goals[obj].importance == "low" && goals[obj].userId == main.currentUserId) {
+          lowArray.push(goals[obj].percentComplete)
+          let percentArray = lowArray.reduce((a, b) => a + b, 0);
+          let avg = percentArray/lowArray.length
+          console.log(avg)
+          console.log(lowArray)
+          lowObj = {
+            "label": "low",
+            "n": avg
+          }
+        } else if (goals[obj].importance == "normal" && goals[obj].userId == main.currentUserId) {
+          normalArray.push(goals[obj].percentComplete)
+          let percentArray = normalArray.reduce((a, b) => a + b, 0);
+          let avg = percentArray/normalArray.length
+          console.log(avg)
+          console.log(normalArray)
+          normalObj = {
+            "label": "normal",
+            "n": avg
+          }
+        } else if (goals[obj].importance == "high" && goals[obj].userId == main.currentUserId) {
+          highArray.push(goals[obj].percentComplete)
+          let percentArray = highArray.reduce((a, b) => a + b, 0);
+          let avg = percentArray/highArray.length
+          console.log(avg)
+          console.log(highArray)
+          highObj = {
+            "label": "high",
+            "n": avg
+          }
         }
       }
+      priorityObj.goals.push(lowObj)
+      priorityObj.goals.push(normalObj)
+      priorityObj.goals.push(highObj)
+      console.log(priorityObj)
+
+      d3.select(".priorityChart")
+    .selectAll("div")
+      .data(priorityObj.goals)
+    .enter().append("div")
+      .style("width", function(d) { return d.n * 4 + "px"; })
+      .text(function(d) { return `${d.label} priority- ${Math.floor(d.n)}%` });
     }
-    catObj.goals.push(physicalObj)
-    catObj.goals.push(workObj)
-    catObj.goals.push(personalObj)
-    console.log(catObj)
-
-
-    d3.select(".categoriesChart")
-  .selectAll("div")
-    .data(catObj.goals)
-  .enter().append("div")
-    .style("width", function(d) { return d.n * 4 + "px"; })
-    .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
-    // var w = 500;
-    //    //h = data.length * 20;
-
-    // var svg = d3.select(".categoriesChart")
-    //   .append("svg")
-    //   .attr("width", w)
-    //   //.attr("height", h);
-
-
-    //   var data = catObj.goals;
-    //   var h = data.length * 22;
-    //   var max_n = 0;
-    //   for (var d in data) {
-    //     max_n = Math.max(data[d].n, max_n);
-    //   }
-
-    //   var dx = w / max_n;
-    //   var dy = h / data.length;
-
-    //   // bars
-    //   var bars = svg.selectAll(".bar")
-    //     .data(data)
-    //     .enter()
-    //     .append("rect")
-    //     .attr("class", function(d, i) {return "bar " + d.label;})
-    //     .attr("x", function(d, i) {return 0;})
-    //     .attr("y", function(d, i) {return dy*i;})
-    //     .attr("width", function(d, i) {return 6*d.n})
-    //     .attr("height", 20)
-
-    //   // labels
-    //   var text = svg.selectAll("text")
-    //     .data(data)
-    //     .enter()
-    //     .append("text")
-    //     .attr("class", function(d, i) {return "label " + d.label;})
-    //     .attr("x", 5)
-    //     .attr("y", function(d, i) {return dy*i + 15;})
-    //     .text( function(d) {return d.label + " " + d.n  + "%";})
-    //     .attr("font-size", "15px")
-
-  }
-
-  main.loadPriorityGoals = function () {
-    let goals = main.goals;
-    let priorityObj = { "goals": [] };
-    let lowArray = [];
-    let normalArray = [];
-    let highArray = [];
-    let lowObj
-    let normalObj
-    let highObj
-
-
-    for (obj in goals) {
-      if (goals[obj].importance == "low" && goals[obj].userId == main.currentUserId) {
-        lowArray.push(goals[obj].percentComplete)
-        let percentArray = lowArray.reduce((a, b) => a + b, 0);
-        let avg = percentArray/lowArray.length
-        console.log(avg)
-        console.log(lowArray)
-        lowObj = {
-          "label": "low",
-          "n": avg
-        }
-      } else if (goals[obj].importance == "normal" && goals[obj].userId == main.currentUserId) {
-        normalArray.push(goals[obj].percentComplete)
-        let percentArray = normalArray.reduce((a, b) => a + b, 0);
-        let avg = percentArray/normalArray.length
-        console.log(avg)
-        console.log(normalArray)
-        normalObj = {
-          "label": "normal",
-          "n": avg
-        }
-      } else if (goals[obj].importance == "high" && goals[obj].userId == main.currentUserId) {
-        highArray.push(goals[obj].percentComplete)
-        let percentArray = highArray.reduce((a, b) => a + b, 0);
-        let avg = percentArray/highArray.length
-        console.log(avg)
-        console.log(highArray)
-        highObj = {
-          "label": "high",
-          "n": avg
-        }
-      }
-    }
-    priorityObj.goals.push(lowObj)
-    priorityObj.goals.push(normalObj)
-    priorityObj.goals.push(highObj)
-    console.log(priorityObj)
-
-    d3.select(".priorityChart")
-  .selectAll("div")
-    .data(priorityObj.goals)
-  .enter().append("div")
-    .style("width", function(d) { return d.n * 4 + "px"; })
-    .text(function(d) { return `${d.label} priority- ${Math.floor(d.n)}%` });
-
-    // var w = 500;
-    //    //h = data.length * 20;
-
-    // var svg = d3.select(".categoriesChart")
-    //   .append("svg")
-    //   .attr("width", w)
-    //   //.attr("height", h);
-
-
-    //   var data = priorityObj.goals;
-    //   var h = data.length * 22;
-    //   var max_n = 0;
-    //   for (var d in data) {
-    //     max_n = Math.max(data[d].n, max_n);
-    //   }
-
-    //   var dx = w / max_n;
-    //   var dy = h / data.length;
-
-    //   // bars
-    //   var bars = svg.selectAll(".bar")
-    //     .data(data)
-    //     .enter()
-    //     .append("rect")
-    //     .attr("class", function(d, i) {return "bar " + d.label;})
-    //     .attr("x", function(d, i) {return 0;})
-    //     .attr("y", function(d, i) {return dy*i;})
-    //     .attr("width", function(d, i) {return 6*d.n})
-    //     .attr("height", 20)
-
-    //   // labels
-    //   var text = svg.selectAll("text")
-    //     .data(data)
-    //     .enter()
-    //     .append("text")
-    //     .attr("class", function(d, i) {return "label " + d.label;})
-    //     .attr("x", 5)
-    //     .attr("y", function(d, i) {return dy*i + 15;})
-    //     .text( function(d) {return d.label + " " + d.n  + "%";})
-    //     .attr("font-size", "15px")
-
+    main.loadAllGoals()
+    main.loadPriorityGoals()
+    main.loadCategorizedGoals()
   }
 
 
