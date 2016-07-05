@@ -3,7 +3,9 @@ body {
 }
 
 h1 {
-	color: forestgreen;
+	color: #bbbbbb;
+  font-weight: bold;
+  margin: 0;
 }
 
 .bar {
@@ -40,11 +42,21 @@ h1 {
 }
 
 .goalbox {
-  border: 3px solid #31627a ;
+  border: 3px solid #CFD1D1;
   margin: 4px;
   padding: 2px;
   border-radius: 4px;
   background-color: #CFD1D1;
+  box-shadow: 0 1px 1px #777;
+}
+
+.chart-box {
+  padding: 2px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  background-color: #CFD1D1;
+  box-shadow: 0 1px 1px #777;
+  width: 90%;
 }
 
 .goaltitle {
@@ -69,23 +81,26 @@ h1 {
 
 .outerbox {
   background-color: #bbbbbb;
+  height: 100vh;
 }
 
 .navbar {
-  background-color: #A7BDC4;
+  background-color: #4B768B;
   margin: 2px;
   border-radius: 10px;
-  border: 5px solid gray;
+  border: 3px solid #31627a;
   padding: 5px;
 }
 
 .nav-left {
   float: left;
+  margin: 10px 0 10px 0;
 }
 
 .nav-right {
   float: right;
-  margin-top: 25px;
+  margin-top: 20px;
+  color: #bbbbbb;
 }
 
 .btn-custom {

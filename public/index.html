@@ -34,10 +34,11 @@
 
 			<div class="container-fluid button-box">
 				<div class="col-med-3"ng-hide="main.currentUserId == undefined">
-					<button class="btn btn-danger btn-sm btn-box" ng-click="main.reset()">do the reset</button>
-					<button class="btn btn-sm btn-custom btn-box" ng-click="main.loadCharts(); chartsVisible=true" ng-hide="chartsVisible">show charts</button>
-					<button class="btn btn-sm btn-custom btn-box" ng-click="main.loadCharts(); chartsVisible=false" ng-show="chartsVisible">hide charts</button>
-					<button class="btn btn-sm btn-custom btn-box" ng-click="showgoalform = true" ng-hide="showgoalform">add a new goal</button>
+					<button class="btn btn-danger btn-sm btn-box" ng-click="main.reset()">RESET</button>
+					<button class="btn btn-sm btn-custom btn-box" ng-click="main.loadCharts(); chartsVisible=true" ng-hide="chartsVisible">Show Charts</button>
+					<button class="btn btn-sm btn-custom btn-box" ng-click="main.loadCharts(); chartsVisible=false" ng-show="chartsVisible">Hide Charts</button>
+					<button class="btn btn-sm btn-custom btn-box" ng-click="showgoalform = true" ng-hide="showgoalform">Add New Goal</button>
+					<button class="btn btn-sm btn-custom btn-box" ng-click="showgoalform = false" ng-show="showgoalform">Hide Goal Form</button>
 
 				</div>
 			</div>
@@ -45,21 +46,21 @@
 			<div ng-show="showgoalform">
 				<div class="form-inline goal-form">
 					<form ng-submit="main.submitGoal()">
-						<input class="form-control" type="text" ng-model="main.goalTitle" placeholder="title">
-						<input class="form-control" type="text" ng-model="main.goalDescription" placeholder="description">
+						<label>Title: </label><input class="form-control input-sm" type="text" ng-model="main.goalTitle" placeholder="title">
+						<label>Description: </label><input class="form-control input-sm" type="text" ng-model="main.goalDescription" placeholder="description">
 						<!-- <input type="number" ng-model="main.goalPoints" placeholder="point value"> -->
 						<!-- <input type="number" ng-model="main.goalLength" placeholder="number of days"> -->
-						<select class="form-control" name="importance" ng-model="main.goalImportance">
+						<label>Priority: </label><select class="form-control input-sm" name="importance" ng-model="main.goalImportance">
 							<option value="low">low</option>
 							<option value="normal">normal</option>
 							<option value="high">high</option>
 						</select>
-						<select class="form-control" name="category" ng-model="main.goalCategory">
+						<label>Category: </label><select class="form-control input-sm" name="category" ng-model="main.goalCategory">
 							<option value="work">work</option>
 							<option value="physical">physical health</option>
 							<option value="personal">personal enrichment</option>
 						</select>
-						<select class="form-control" name="frequency" ng-model="main.goalFrequency">
+						<label>Frequency: </label><select class="form-control input-sm" name="frequency" ng-model="main.goalFrequency">
 							<option value="daily">Daily</option>
 							<option value="weekdays">Weekdays</option>
 							<option value="weekends">Weekends</option>
@@ -72,13 +73,16 @@
 				</div>
 			</div>
 
-			<div ng-show= "chartsVisible"class="chart-div">
-				<div>All Goals</div>
-				<p class="allGoalsChart"></p>
-				<div>By Importance</div>
-				<p class="priorityChart"></p>
-				<div>By Category</div>
-				<p class="categoriesChart"></p>
+			<div ng-show= "chartsVisible"class="chart-div container">
+				<div class="chart-box col-lg-3">By Importance
+					<div class="priorityChart"></div>
+				</div >
+				<div class="chart-box col-lg-3">By Category
+					<div class="categoriesChart"></div>
+				</div>
+				<div class="chart-box col-lg-3">All Goals
+					<div class="allGoalsChart"></div>
+				</div>
 			</div>
 
 			<div class="container-fluid">
@@ -86,8 +90,7 @@
 					<div class="goaltitle" ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
 					<div class="goalDescription">{{goal.description}}</div>
 					<div>Completed Today? {{goal.complete}}</div>
-					 <div>{{goal.percentComplete}}%</div>
-
+					<div>{{goal.percentComplete}}%</div>
 					<button class="btn btn-xs btn-custom" ng-click="main.completeGoal(goal.$key)">Complete For Today</button>
 					<button class="btn btn-xs btn-custom" ng-click="main.deleteGoal(goal.$key)">Delete</button>
 				</div>
