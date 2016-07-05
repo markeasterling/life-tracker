@@ -123,6 +123,12 @@ angular.module("life", ['angular.filter', 'ngRoute'])
     })
       // $location.path('/login')
       setCurrentTime();
+      main.goalTitle = ""
+      main.goalDescription = ""
+      main.goalImportance = ""
+      main.goalCategory = ""
+      main.goalFrequency = ""
+
       //console.log(main.time)
 	};
 

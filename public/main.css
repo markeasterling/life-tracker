@@ -114,5 +114,19 @@ h1 {
   margin: 10px 0 0 19px;
 }
 
+.goal-frequency,
+.goal-importance {
+  font-size: 10px;
+  text-decoration: underline;
+  float: left;
+}
+
+.frequency-importance-box {
+  display: inline-block;
+}
+
+.complete{
+  opacity: .5
+}
 
 
