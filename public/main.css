@@ -81,7 +81,7 @@ h1 {
 
 .outerbox {
   background-color: #bbbbbb;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .navbar {
