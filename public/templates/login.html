@@ -1,0 +1,41 @@
+<div ng-controller="MainCtrl as main">
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <h1>{{main.heading}}</h1>
+    </div>
+    <div ng-hide="main.currentUserId == undefined">
+      <div class="nav-right" >welcome, {{main.currentUserEmail}}!
+        <button class="btn-xs btn btn-custom" ng-click="main.logout()">sign out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="description">
+      Lifetracker is an application where a user can track their progress
+      of self defined, periodic goals. Whenever a user accomplishes one of their goals,
+      they can mark it as complete. Every 24 hours, the internal clock resets, and the
+      user's goals will be made available again to mark as complete.
+
+
+  </div>
+
+  <div class="container" ng-show="main.currentUserId == undefined">
+    <h3>Log In with Existing account</h3>
+    <form ng-submit="main.login(userEmail, userPassword)">
+      <input type="text" ng-model="userEmail" placeholder="email">
+      <input type="password" ng-model="userPassword" placeholder="password">
+      <button class="btn" type="submit">Log In</button>
+    </form>
+  </div>
+
+  <div class="container" ng-show="main.currentUserId == undefined">
+    <h3>Create a new account</h3>
+    <form ng-submit="main.register(registerEmail, registerPassword)">
+      <input type="text" ng-model="registerEmail" placeholder="email">
+      <input type="password" ng-model="registerPassword" placeholder="password">
+      <button class="btn" type="submit">Register</button>
+    </form>
+  </div>
+
+</div>

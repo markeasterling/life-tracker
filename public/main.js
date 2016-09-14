@@ -1,4 +1,5 @@
-angular.module("life", ['angular.filter', 'ngRoute'])
+var app = angular
+  .module("life", ['angular.filter', 'ngRoute'])
 	.config(() => (
 		firebase.initializeApp({
     apiKey: "AIzaSyD-tzA7TfGK1BW2OkIajK0jb8CBibYpXW0",
@@ -7,59 +8,19 @@ angular.module("life", ['angular.filter', 'ngRoute'])
     storageBucket: "life-tracker-e5c81.appspot.com",
   })))
 
-  // .controller("GoalCtrl", function($scope, $location){
-  //   goal = this;
-  //   goal.heading = "Add a New Goal"
-
-  //   console.log("I'm working")
-  //   //$scope.form = {}
-  //   //console.log($scope.form)
-
-
-
-
-  //     goal.submitGoal = function () {
-  //       console.log(form.addGoal.title)
-  //     //let start = Date.now()
-  //     //let end = start + goal.goalLength * 86400000
-  //     //console.log(goal.goalTitle)
-
-  //     // firebase.database().ref('/goals/').push({
-  //     //   "title": goal.goalTitle,
-  //     //   "description": goal.goalDescription,
-  //     //   // "points": goal.goalPoints,
-  //     //   // "length": goal.goalLength,
-  //     //   "importance": goal.goalImportance,
-  //     //   "category": goal.goalCategory,
-  //     //   "frequency": goal.goalFrequency,
-  //     //   "complete": false,
-  //     //   //"dateStarted": start,
-  //     //   //"dateEnded": end,
-  //     //   "record": ["true"],
-  //     //   "percentComplete": 0,
-  //     //   "userId": goal.currentUserId
-  //     // })
-
-  //   };
-  // })
 
   .controller("MainCtrl", function($timeout, $scope, $location){
     main = this;
     main.heading = "Lifetracker";
     main.loginHeader = "login";
-    //main.currentUserId= "zS0MHocQRcWgB14PmyH6VvP085I2"
-    //let currentUserId;
-    //$scope.currentUserId = userId
 
 
   const setCurrentTime = () => {
     firebase.database().ref('/time/')
       .update({"currentTime": Date.now()})
-      console.log(main.currentUserId)
   };
   setCurrentTime();
 
-//NOT SURE ABOUT THIS PART/////
   const updateTime = snapshot => (
     $timeout().then(() => (
       main.time = Object.assign(
@@ -69,7 +30,6 @@ angular.module("life", ['angular.filter', 'ngRoute'])
       )
     ))
   )
-/////////////////////////////
 
   const updateGoals = (snapshot) => (
     $timeout().then(() => (
@@ -82,7 +42,6 @@ angular.module("life", ['angular.filter', 'ngRoute'])
   );
 
   main.completeGoal = function (key) {
-    console.log(key)
     return firebase.database().ref(`/goals/${key}`)
       .transaction(goal => {
         goal.complete = true
@@ -94,68 +53,51 @@ angular.module("life", ['angular.filter', 'ngRoute'])
   main.deleteGoal = function (key) {
     firebase.database().ref(`/goals/${key}`).remove()
   }
-//////non functioning///
-  // main.showGoal = function (key) {
-  //   console.log(key)
-  //   let current=main.goals[key]
-  //   console.log(current)
-  //   goalDisplay = `<div>Title: ${current.title}</div>`
-  // };
-/////////////////////
-  main.submitGoal = function () {
-    //let start = Date.now()
-    //let end = start + main.goalLength * 86400000
 
+  main.submitGoal = function () {
     firebase.database().ref('/goals/').push({
       "title": main.goalTitle,
       "description": main.goalDescription,
-      // "points": main.goalPoints,
-      // "length": main.goalLength,
       "importance": main.goalImportance,
       "category": main.goalCategory,
       "frequency": main.goalFrequency,
       "complete": false,
-      //"dateStarted": start,
-      //"dateEnded": end,
       "record": ["true"],
       "percentComplete": 0,
       "userId": main.currentUserId
     })
-      // $location.path('/login')
       setCurrentTime();
       main.goalTitle = ""
       main.goalDescription = ""
       main.goalImportance = ""
       main.goalCategory = ""
       main.goalFrequency = ""
-
-      //console.log(main.time)
 	};
 
-  main.addNewGoal = function () {
-    // MODAL MADNESS
-    // ModalService.showModal({
-    //         templateUrl: 'addgoal.html',
-    //         controller: "GoalCtrl"
-    //     })
-    // .then(function(modal) {
-    //         modal.element.modal();
-    //         modal.close.then(function(result) {
-    //             $scope.message = "You said " + result;
-    //         });
-    //     });
-  }
-
   main.login = function (email, password) {
-    console.log(email);
-    console.log(password);
     firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {main.switchToMain()})
+
+
   };
+
+	main.register = function (email, password) {
+		firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {firebase.auth().signInWithEmailAndPassword(email, password)})
+    .then(() => {main.switchToMain()})
+	}
 
   main.logout = function () {
     firebase.auth().signOut().then(function(){console.log("sign out success")
     })
     main.currentUserId = undefined
+    $location.path('/')
+  }
+
+  main.switchToMain = function () {
+    // if (main.currentUserId != undefined) {
+      $timeout().then(() => {$location.path("/main")})
+    // }
   }
 
   main.reset = function () {
@@ -166,16 +108,13 @@ angular.module("life", ['angular.filter', 'ngRoute'])
       if (main.time.currentTime > main.time.inceptionTime) {
         //console.log(true)
         let goals = main.goals
-        //let time = main.time
         firebase.database().ref(`/time/`)
               .transaction(time => {
-                time.inceptionTime = time.inceptionTime + 1 // 86400000
+                time.inceptionTime = time.inceptionTime + 86400000 //ms in a day
                 return time
               })
 
         for (obj in goals) {
-
-          console.log("for:", goals[obj])
           if (goals[obj].complete == true) {
             //console.log("that goal has been completed")
             firebase.database().ref(`/goals/${obj}`)
@@ -188,14 +127,10 @@ angular.module("life", ['angular.filter', 'ngRoute'])
                 //goal.record.push(goal.complete)
                 goal.complete = false
                 goal.percentComplete = Math.round((trues.length / (goal.record.length - 1)) * 100)
-                console.log("true trues",trues.length)
-                console.log("true total",goal.record.length)
                 return goal
               })
                 //console.log(goal.record)
           } else {
-            // console.log("that goal has not been completed")
-            //goals[obj].record.push(false)
             firebase.database().ref(`/goals/${obj}`)
               .transaction(goal => {
                 function numberTrue(value){
@@ -206,23 +141,19 @@ angular.module("life", ['angular.filter', 'ngRoute'])
                 goal.record.push(goal.complete)
                 goal.complete = false
                 goal.percentComplete = Math.round((trues.length / (goal.record.length - 1)) * 100)
-                console.log("false trues",trues.length)
-                console.log("false total",goal.record.length)
                 return goal
               })
           }
         }
       } else {
-        console.log(false)
+        // console.log(false)
       }
     })
   }
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        // console.log("user id", user.uid)
-        // console.log(user.getToken())
-        console.log(user.email)
+        // console.log(user.email)
         main.currentUserId = user.uid
         main.currentUserEmail= user.email
     }
@@ -230,7 +161,6 @@ angular.module("life", ['angular.filter', 'ngRoute'])
 
   main.loadCharts = function() {
     main.loadAllGoals = function () {
-      //console.log(main.currentUserId)
       let goals = main.goals
       let allGoals = { "goals": []}
       for ( obj in goals ) {
@@ -271,8 +201,6 @@ angular.module("life", ['angular.filter', 'ngRoute'])
           physicalArray.push(goals[obj].percentComplete)
           let percentArray = physicalArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/physicalArray.length
-          console.log(avg)
-          console.log(physicalArray)
           physicalObj = {
             "label": "physical",
             "n": avg
@@ -281,8 +209,6 @@ angular.module("life", ['angular.filter', 'ngRoute'])
           workArray.push(goals[obj].percentComplete)
           let percentArray = workArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/workArray.length
-          console.log(avg)
-          console.log(workArray)
           workObj = {
             "label": "work",
             "n": avg
@@ -291,18 +217,30 @@ angular.module("life", ['angular.filter', 'ngRoute'])
           personalArray.push(goals[obj].percentComplete)
           let percentArray = personalArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/personalArray.length
-          console.log(avg)
-          console.log(personalArray)
           personalObj = {
             "label": "personal",
             "n": avg
           }
         }
       }
-      catObj.goals.push(physicalObj)
-      catObj.goals.push(workObj)
-      catObj.goals.push(personalObj)
-      console.log(catObj)
+
+			if (physicalObj){
+				catObj.goals.push(physicalObj)
+			} else {
+				console.log("physicalObj does not exist")
+			}
+
+			if (workObj){
+				catObj.goals.push(workObj)
+			} else {
+				console.log("workObj does not exist")
+			}
+
+			if (personalObj){
+				catObj.goals.push(personalObj)
+			} else {
+				console.log("personalObj does not exist")
+			}
 
 
       d3.select(".categoriesChart")
@@ -329,8 +267,6 @@ angular.module("life", ['angular.filter', 'ngRoute'])
           lowArray.push(goals[obj].percentComplete)
           let percentArray = lowArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/lowArray.length
-          console.log(avg)
-          console.log(lowArray)
           lowObj = {
             "label": "low",
             "n": avg
@@ -339,8 +275,6 @@ angular.module("life", ['angular.filter', 'ngRoute'])
           normalArray.push(goals[obj].percentComplete)
           let percentArray = normalArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/normalArray.length
-          console.log(avg)
-          console.log(normalArray)
           normalObj = {
             "label": "normal",
             "n": avg
@@ -349,18 +283,34 @@ angular.module("life", ['angular.filter', 'ngRoute'])
           highArray.push(goals[obj].percentComplete)
           let percentArray = highArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/highArray.length
-          console.log(avg)
-          console.log(highArray)
           highObj = {
             "label": "high",
             "n": avg
           }
         }
       }
-      priorityObj.goals.push(lowObj)
-      priorityObj.goals.push(normalObj)
-      priorityObj.goals.push(highObj)
-      console.log(priorityObj)
+
+			if (lowObj){
+				priorityObj.goals.push(lowObj)
+			} else {
+				console.log("lowObj does not exist")
+			}
+
+			if (normalObj){
+				priorityObj.goals.push(normalObj)
+			} else {
+				console.log("normalObj does not exist")
+			}
+
+			if (highObj){
+				priorityObj.goals.push(highObj)
+			} else {
+				console.log("highObj does not exist")
+			}
+			// priorityObj.goals.push(lowObj)
+      // priorityObj.goals.push(normalObj)
+      // priorityObj.goals.push(highObj)
+      // console.log(priorityObj)
 
       d3.select(".priorityChart")
     .selectAll("div")
@@ -379,8 +329,5 @@ angular.module("life", ['angular.filter', 'ngRoute'])
   firebase.database().ref('/goals/').on('child_added', updateGoals)
   firebase.database().ref('/goals/').on('child_changed', updateGoals)
   firebase.database().ref('/goals/').on('child_removed', updateGoals)
-    // firebase.database().ref('/goals/').on('child_moved', updateGoals)
-   /////////////////NOT SURE ABOUT THIS////////////
-    firebase.database().ref('/time/').on('child_changed', updateTime)
-   /////////////////////////////////////////////////
+  firebase.database().ref('/time/').on('child_changed', updateTime)
   });

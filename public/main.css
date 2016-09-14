@@ -1,5 +1,6 @@
 body {
 	box-sizing: border-box;
+  font-size: 16px;
 }
 
 h1 {
@@ -8,33 +9,27 @@ h1 {
   margin: 0;
 }
 
+.description {
+	border: 3px solid #CFD1D1;
+	text-align: center;
+	font-weight: bold;
+	margin: auto;
+	padding: 2px;
+	border-radius: 4px;
+	background-color: #CFD1D1;
+	box-shadow: 0 1px 1px #777;
+}
+
 .bar {
 	fill: steelblue;
 }
 
-.allGoalsChart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-  border-radius: 4px;
-}
-
-.priorityChart div {
-	font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-  border-radius: 4px;
-}
+.allGoalsChart div,
+.priorityChart div,
 .categoriesChart div {
-	font: 10px sans-serif;
+  font: 12px sans-serif;
   background-color: steelblue;
-  text-align: right;
+  text-align: left;
   padding: 3px;
   margin: 1px;
   color: white;
@@ -49,6 +44,7 @@ h1 {
   background-color: #CFD1D1;
   box-shadow: 0 1px 1px #777;
 }
+
 
 .chart-box {
   padding: 2px;
@@ -66,7 +62,7 @@ h1 {
 
 .goalDescription {
   font-style: italic;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .button-box {
@@ -128,5 +124,3 @@ h1 {
 .complete{
   opacity: .5
 }
-
-

@@ -11,159 +11,8 @@
 </head>
 <body>
 	<div class="outerbox" ng-app="life">
-		<div ng-controller="MainCtrl as main">
+		<div ng-view class="ngview"></div>
 
-			<nav class="navbar">
-				<div class="nav-left">
-					<h1>{{main.heading}}</h1>
-				</div>
-				<div ng-hide="main.currentUserId == undefined">
-					<div class="nav-right" >welcome, {{main.currentUserEmail}}!
-						<button class="btn-xs btn btn-custom" ng-click="main.logout()">sign out</button>
-					</div>
-				</div>
-			</nav>
-
-			<div ng-show="main.currentUserId == undefined">
-				<form ng-submit="main.login(userEmail, userPassword)">
-					<input type="text" ng-model="userEmail" placeholder="email">
-					<input type="password" ng-model="userPassword" placeholder="password">
-					<button type="submit">Log In</button>
-				</form>
-			</div>
-
-			<div class="container-fluid button-box">
-				<div class="col-med-3"ng-hide="main.currentUserId == undefined">
-					<button class="btn btn-danger btn-sm btn-box" ng-click="main.reset()">RESET</button>
-					<button class="btn btn-sm btn-custom btn-box" ng-click="main.loadCharts(); chartsVisible=true" ng-hide="chartsVisible">Show Charts</button>
-					<button class="btn btn-sm btn-custom btn-box" ng-click="main.loadCharts(); chartsVisible=false" ng-show="chartsVisible">Hide Charts</button>
-					<button class="btn btn-sm btn-custom btn-box" ng-click="showgoalform = true" ng-hide="showgoalform">Add New Goal</button>
-					<button class="btn btn-sm btn-custom btn-box" ng-click="showgoalform = false" ng-show="showgoalform">Hide Goal Form</button>
-
-				</div>
-			</div>
-
-			<div ng-show="showgoalform">
-				<div class="form-inline goal-form">
-					<form ng-submit="main.submitGoal()">
-						<label>Title: </label><input class="form-control input-sm" type="text" ng-model="main.goalTitle">
-						<label>Description: </label><input class="form-control input-sm" type="text" ng-model="main.goalDescription">
-						<!-- <input type="number" ng-model="main.goalPoints" placeholder="point value"> -->
-						<!-- <input type="number" ng-model="main.goalLength" placeholder="number of days"> -->
-						<label>Priority: </label><select class="form-control input-sm" name="importance" ng-model="main.goalImportance">
-							<option value="low">low</option>
-							<option value="normal">normal</option>
-							<option value="high">high</option>
-						</select>
-						<label>Category: </label><select class="form-control input-sm" name="category" ng-model="main.goalCategory">
-							<option value="work">work</option>
-							<option value="physical">physical health</option>
-							<option value="personal">personal enrichment</option>
-						</select>
-						<label>Frequency: </label><select class="form-control input-sm" name="frequency" ng-model="main.goalFrequency">
-							<option value=1>Daily</option>
-							<option value=0.71>Weekdays</option>
-							<option value=0.29>Weekends</option>
-							<option value=0.42>Thrice a week</option>
-							<option value=0.28>Twice a week</option>
-							<option value=0.14>Once a week</option>
-						</select>
-						<button  class="btn btn-sm btn-custom" type="submit">Add Goal</button>
-					</form>
-				</div>
-			</div>
-
-			<div ng-show= "chartsVisible"class="chart-div container">
-				<div class="chart-box col-lg-3">Completeness by Importance
-					<div class="priorityChart"></div>
-				</div >
-				<div class="chart-box col-lg-3">Completeness by Category
-					<div class="categoriesChart"></div>
-				</div>
-				<div class="chart-box col-lg-3">Completeness of all Goals
-					<div class="allGoalsChart"></div>
-				</div>
-			</div>
-
-			<div class="container-fluid">
-				<div  ng-class="{ 'complete': goal.complete == true }" class="goalbox col-sm-3" ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete' | where:{userId: main.currentUserId}">
-					<div class="goaltitle" ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
-					<div ng-hide="goal.complete == true">
-						<div class="frequency-importance-box">
-							<div class="goal-frequency">
-								<div ng-show="goal.frequency == 1">Everyday -</div>
-								<div ng-show="goal.frequency == 0.71">Weekdays -</div>
-								<div ng-show="goal.frequency == 0.42">Thrice a week -</div>
-								<div ng-show="goal.frequency == 0.28">Twice a week -</div>
-								<div ng-show="goal.frequency == 0.14">Weekly -</div>
-								<div ng-show="goal.frequency == 0.29">Weekends - </div>
-							</div>
-							<div class="goal-importance">
-								<div ng-show="goal.importance == 'high'">- Highly important</div>
-								<div ng-show="goal.importance == 'normal'">- Moderately important</div>
-								<div ng-show="goal.importance == 'low'">- Not important</div>
-							</div>
-						</div>
-					</div>
-					<div ng-hide="goal.complete == true" class="goalDescription">{{goal.description}}</div>
-
-					<div class="goal-complete" ng-show="goal.complete == true">Complete for today. Good job!
-						<div>You complete this {{goal.percentComplete}}% of the time.</div>
-					</div>
-					<div>{{goal.goalFrequency}}</div>
-					<div ng-hide="goal.complete == true">
-						<button class="btn btn-xs btn-custom" ng-click="main.completeGoal(goal.$key)">Complete</button>
-						<button class="btn btn-xs btn-custom" ng-click="main.deleteGoal(goal.$key)">Delete</button>
-					</div>
-				</div>
-			</div>
-
-
-<!-- <script type="text/ng-template" id="addgoal.html">
-         <div class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h1 class="modal-title">{{goal.heading}}</h1>
-              </div>
-              <div class="modal-body">
-								<form ng-submit="$scope.submitGoal()" name="form.addGoal">
-									<input type="text" ng-model="$scope.goalTitle" placeholder="title">
-									<input type="text" ng-model="goal.goalDescription" placeholder="description">
-
-									<select name="importance" ng-model="goal.goalImportance">
-										<option value="low">low</option>
-										<option value="normal">normal</option>
-										<option value="high">high</option>
-									</select>
-									<select name="category" ng-model="goal.goalCategory">
-										<option value="work">work</option>
-										<option value="physical">physical health</option>
-										<option value="personal">personal enrichment</option>
-									</select>
-									<select name="frequency" ng-model="goal.goalFrequency">
-										<option value="daily">Daily</option>
-										<option value="weekdays">Weekdays</option>
-										<option value="weekends">Weekends</option>
-										<option value="three">Thrice a week</option>
-										<option value="two">Twice a week</option>
-										<option value="one">Once a week</option>
-									</select>
-									<button type="submit">Add Goal</button>
-								</form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" ng-click="close('No')" class="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" ng-click="close('Yes')" class="btn btn-primary" data-dismiss="modal">Yes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-     </script> -->
-
-
-		</div>
 
 	</div>
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
@@ -172,10 +21,9 @@
 	<script src="lib/angular-route/angular-route.min.js"></script>
 	<script src="lib/angular-filter/dist/angular-filter.min.js"></script>
 	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<!-- <script src="lib/angular-modal-service/dst/angular-modal-service.min.js"></script> -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-
 	<script src="main.js"></script>
+	<script src="main.config.js"></script>
 </body>
 </html>
