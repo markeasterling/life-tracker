@@ -152,6 +152,13 @@ angular.module("life", ['angular.filter', 'ngRoute'])
     firebase.auth().signInWithEmailAndPassword(email, password)
   };
 
+	main.register = function (email, password) {
+		console.log(email);
+		console.log(password);
+		firebase.auth().createUserWithEmailAndPassword(email, password)
+		firebase.auth().signInWithEmailAndPassword(email, password)
+	}
+
   main.logout = function () {
     firebase.auth().signOut().then(function(){console.log("sign out success")
     })
