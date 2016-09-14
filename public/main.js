@@ -42,7 +42,6 @@ var app = angular
   );
 
   main.completeGoal = function (key) {
-    console.log(key)
     return firebase.database().ref(`/goals/${key}`)
       .transaction(goal => {
         goal.complete = true
@@ -76,8 +75,6 @@ var app = angular
 	};
 
   main.login = function (email, password) {
-    console.log(email);
-    console.log(password);
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {main.switchToMain()})
 
@@ -85,8 +82,6 @@ var app = angular
   };
 
 	main.register = function (email, password) {
-		console.log(email);
-		console.log(password);
 		firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {firebase.auth().signInWithEmailAndPassword(email, password)})
     .then(() => {main.switchToMain()})
@@ -120,8 +115,6 @@ var app = angular
               })
 
         for (obj in goals) {
-
-          console.log("for:", goals[obj])
           if (goals[obj].complete == true) {
             //console.log("that goal has been completed")
             firebase.database().ref(`/goals/${obj}`)
@@ -134,8 +127,6 @@ var app = angular
                 //goal.record.push(goal.complete)
                 goal.complete = false
                 goal.percentComplete = Math.round((trues.length / (goal.record.length - 1)) * 100)
-                console.log("true trues",trues.length)
-                console.log("true total",goal.record.length)
                 return goal
               })
                 //console.log(goal.record)
@@ -150,8 +141,6 @@ var app = angular
                 goal.record.push(goal.complete)
                 goal.complete = false
                 goal.percentComplete = Math.round((trues.length / (goal.record.length - 1)) * 100)
-                console.log("false trues",trues.length)
-                console.log("false total",goal.record.length)
                 return goal
               })
           }
@@ -212,8 +201,6 @@ var app = angular
           physicalArray.push(goals[obj].percentComplete)
           let percentArray = physicalArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/physicalArray.length
-          console.log(avg)
-          console.log(physicalArray)
           physicalObj = {
             "label": "physical",
             "n": avg
@@ -222,8 +209,6 @@ var app = angular
           workArray.push(goals[obj].percentComplete)
           let percentArray = workArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/workArray.length
-          console.log(avg)
-          console.log(workArray)
           workObj = {
             "label": "work",
             "n": avg
@@ -232,8 +217,6 @@ var app = angular
           personalArray.push(goals[obj].percentComplete)
           let percentArray = personalArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/personalArray.length
-          console.log(avg)
-          console.log(personalArray)
           personalObj = {
             "label": "personal",
             "n": avg
@@ -284,8 +267,6 @@ var app = angular
           lowArray.push(goals[obj].percentComplete)
           let percentArray = lowArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/lowArray.length
-          console.log(avg)
-          console.log(lowArray)
           lowObj = {
             "label": "low",
             "n": avg
@@ -294,8 +275,6 @@ var app = angular
           normalArray.push(goals[obj].percentComplete)
           let percentArray = normalArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/normalArray.length
-          console.log(avg)
-          console.log(normalArray)
           normalObj = {
             "label": "normal",
             "n": avg
@@ -304,8 +283,6 @@ var app = angular
           highArray.push(goals[obj].percentComplete)
           let percentArray = highArray.reduce((a, b) => a + b, 0);
           let avg = percentArray/highArray.length
-          console.log(avg)
-          console.log(highArray)
           highObj = {
             "label": "high",
             "n": avg
