@@ -2,7 +2,7 @@
 
 LifeTracker is a a goal tracking application made for the long game.
 
-![image of goals where none are complete](https://github.com/markeasterling/life-tracker/blob/master/img/goalsnonecomplete.png)
+![image of goals where none are complete](https://github.com/markeasterling/life-tracker/blob/master/img/goalsnonecomplete.png=250x)
 
 Users can add goals with predefined categories and importance.
 
