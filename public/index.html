@@ -44,7 +44,7 @@
 
 			<div class="container-fluid button-box">
 				<div class="col-med-3"ng-hide="main.currentUserId == undefined">
-					<button class="btn btn-danger btn-sm btn-box" ng-click="main.reset()">RESET</button>
+					<button class="btn btn-danger btn-sm btn-box" ng-click="main.reset()"> MANUAL DAY RESET</button>
 					<button class="btn btn-sm btn-custom btn-box" ng-click="main.loadCharts(); chartsVisible=true" ng-hide="chartsVisible">Show Charts</button>
 					<button class="btn btn-sm btn-custom btn-box" ng-click="main.loadCharts(); chartsVisible=false" ng-show="chartsVisible">Hide Charts</button>
 					<button class="btn btn-sm btn-custom btn-box" ng-click="showgoalform = true" ng-hide="showgoalform">Add New Goal</button>
@@ -129,48 +129,7 @@
 			</div>
 
 
-<!-- <script type="text/ng-template" id="addgoal.html">
-         <div class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h1 class="modal-title">{{goal.heading}}</h1>
-              </div>
-              <div class="modal-body">
-								<form ng-submit="$scope.submitGoal()" name="form.addGoal">
-									<input type="text" ng-model="$scope.goalTitle" placeholder="title">
-									<input type="text" ng-model="goal.goalDescription" placeholder="description">
 
-									<select name="importance" ng-model="goal.goalImportance">
-										<option value="low">low</option>
-										<option value="normal">normal</option>
-										<option value="high">high</option>
-									</select>
-									<select name="category" ng-model="goal.goalCategory">
-										<option value="work">work</option>
-										<option value="physical">physical health</option>
-										<option value="personal">personal enrichment</option>
-									</select>
-									<select name="frequency" ng-model="goal.goalFrequency">
-										<option value="daily">Daily</option>
-										<option value="weekdays">Weekdays</option>
-										<option value="weekends">Weekends</option>
-										<option value="three">Thrice a week</option>
-										<option value="two">Twice a week</option>
-										<option value="one">Once a week</option>
-									</select>
-									<button type="submit">Add Goal</button>
-								</form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" ng-click="close('No')" class="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" ng-click="close('Yes')" class="btn btn-primary" data-dismiss="modal">Yes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-     </script> -->
 
 
 		</div>
@@ -182,7 +141,6 @@
 	<script src="lib/angular-route/angular-route.min.js"></script>
 	<script src="lib/angular-filter/dist/angular-filter.min.js"></script>
 	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<!-- <script src="lib/angular-modal-service/dst/angular-modal-service.min.js"></script> -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 
