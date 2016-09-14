@@ -13,32 +13,12 @@ h1 {
 	fill: steelblue;
 }
 
-.allGoalsChart div {
-  font: 14px sans-serif;
-  font-weight: bold;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-  border-radius: 4px;
-}
-
-.priorityChart div {
-	font: 14px sans-serif;
-  font-weight: bold;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-  border-radius: 4px;
-}
+.allGoalsChart div,
+.priorityChart div,
 .categoriesChart div {
-	font: 14px sans-serif;
-  font-weight: bold;
+  font: 12px sans-serif;
   background-color: steelblue;
-  text-align: right;
+  text-align: left;
   padding: 3px;
   margin: 1px;
   color: white;
@@ -132,5 +112,3 @@ h1 {
 .complete{
   opacity: .5
 }
-
-

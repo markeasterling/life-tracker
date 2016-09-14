@@ -299,6 +299,7 @@ angular.module("life", ['angular.filter', 'ngRoute'])
           }
         }
       }
+
 			if (lowObj){
 				priorityObj.goals.push(lowObj)
 			} else {
