@@ -1,4 +1,5 @@
-angular.module("life", ['angular.filter', 'ngRoute'])
+var app = angular
+  .module("life", ['angular.filter', 'ngRoute'])
 	.config(() => (
 		firebase.initializeApp({
     apiKey: "AIzaSyD-tzA7TfGK1BW2OkIajK0jb8CBibYpXW0",
@@ -78,18 +79,30 @@ angular.module("life", ['angular.filter', 'ngRoute'])
     console.log(email);
     console.log(password);
     firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {main.switchToMain()})
+
+
   };
 
 	main.register = function (email, password) {
 		console.log(email);
 		console.log(password);
 		firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {firebase.auth().signInWithEmailAndPassword(email, password)})
+    .then(() => {main.switchToMain()})
 	}
 
   main.logout = function () {
     firebase.auth().signOut().then(function(){console.log("sign out success")
     })
     main.currentUserId = undefined
+    $location.path('/')
+  }
+
+  main.switchToMain = function () {
+    // if (main.currentUserId != undefined) {
+      $timeout().then(() => {$location.path("/main")})
+    // }
   }
 
   main.reset = function () {

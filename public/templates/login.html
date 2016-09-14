@@ -1,0 +1,32 @@
+<div ng-controller="MainCtrl as main">
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <h1>{{main.heading}}</h1>
+    </div>
+    <div ng-hide="main.currentUserId == undefined">
+      <div class="nav-right" >welcome, {{main.currentUserEmail}}!
+        <button class="btn-xs btn btn-custom" ng-click="main.logout()">sign out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div ng-show="main.currentUserId == undefined">
+    <h3>Log In with Existing account</h3>
+    <form ng-submit="main.login(userEmail, userPassword)">
+      <input type="text" ng-model="userEmail" placeholder="email">
+      <input type="password" ng-model="userPassword" placeholder="password">
+      <button type="submit">Log In</button>
+    </form>
+  </div>
+
+  <div ng-show="main.currentUserId == undefined">
+    <h3>Create a new account</h3>
+    <form ng-submit="main.register(registerEmail, registerPassword)">
+      <input type="text" ng-model="registerEmail" placeholder="email">
+      <input type="password" ng-model="registerPassword" placeholder="password">
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+</div>
