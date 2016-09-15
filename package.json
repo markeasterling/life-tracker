@@ -1,0 +1,24 @@
+{
+  "name": "life-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server public",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markeasterling/life-tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/markeasterling/life-tracker/issues"
+  },
+  "homepage": "https://github.com/markeasterling/life-tracker#readme",
+  "devDependencies": {
+    "d3": "^3.5.17",
+    "http-server": "^0.9.0"
+  }
+}

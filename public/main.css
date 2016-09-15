@@ -1,0 +1,126 @@
+body {
+	box-sizing: border-box;
+  font-size: 16px;
+}
+
+h1 {
+	color: #bbbbbb;
+  font-weight: bold;
+  margin: 0;
+}
+
+.description {
+	border: 3px solid #CFD1D1;
+	text-align: center;
+	font-weight: bold;
+	margin: auto;
+	padding: 2px;
+	border-radius: 4px;
+	background-color: #CFD1D1;
+	box-shadow: 0 1px 1px #777;
+}
+
+.bar {
+	fill: steelblue;
+}
+
+.allGoalsChart div,
+.priorityChart div,
+.categoriesChart div {
+  font: 12px sans-serif;
+  background-color: steelblue;
+  text-align: left;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+  border-radius: 4px;
+}
+
+.goalbox {
+  border: 3px solid #CFD1D1;
+  margin: 4px;
+  padding: 2px;
+  border-radius: 4px;
+  background-color: #CFD1D1;
+  box-shadow: 0 1px 1px #777;
+}
+
+
+.chart-box {
+  padding: 2px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  background-color: #CFD1D1;
+  box-shadow: 0 1px 1px #777;
+  width: 90%;
+}
+
+.goaltitle {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.goalDescription {
+  font-style: italic;
+  font-size: 12px;
+}
+
+.button-box {
+  margin-left: 4px;
+  margin-top: 8px;
+}
+
+.btn-box {
+  margin-top: 5px;
+
+}
+
+.outerbox {
+  background-color: #a0a0a0;
+  min-height: 100vh;
+}
+
+.navbar {
+  background-color: #4B768B;
+  margin: 2px;
+  border-radius: 10px;
+  border: 3px solid #31627a;
+  padding: 5px;
+}
+
+.nav-left {
+  float: left;
+  margin: 10px 0 10px 0;
+}
+
+.nav-right {
+  float: right;
+  margin-top: 20px;
+  color: #bbbbbb;
+}
+
+.btn-custom {
+  background-color: #31627a;
+  border-color: #31627a;
+  color: #fff;
+}
+
+.goal-form,
+.chart-div {
+  margin: 10px 0 0 19px;
+}
+
+.goal-frequency,
+.goal-importance {
+  font-size: 10px;
+  text-decoration: underline;
+  float: left;
+}
+
+.frequency-importance-box {
+  display: inline-block;
+}
+
+.complete{
+  opacity: .5
+}
