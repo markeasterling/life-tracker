@@ -2,6 +2,18 @@
 
 LifeTracker is a a goal tracking application made for the long game.
 
+## Running LifeTracker
+
+These instructions below assume you have NPM installed, but if you don't, check out this link to get it installed!
+<https://docs.npmjs.com/getting-started/installing-node>
+``` 
+git clone https://github.com/markeasterling/life-tracker.git [PROJECT NAME-no brackets]
+npm install
+npm start
+
+then, copy one of the two "Available on:" URLs into your browser
+```
+
 ![image of goals where none are complete](https://github.com/markeasterling/life-tracker/blob/master/img/goalsnonecomplete.png)
 
 Users can add goals with predefined categories and importance.
