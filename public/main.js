@@ -7,8 +7,6 @@ var app = angular
     databaseURL: "https://life-tracker-e5c81.firebaseio.com",
     storageBucket: "life-tracker-e5c81.appspot.com",
   })))
-
-
   .controller("MainCtrl", function($timeout, $scope, $location){
     main = this;
     main.heading = "Lifetracker";
@@ -18,8 +16,6 @@ var app = angular
     firebase.database().ref('/time/')
       .update({"currentTime": Date.now()})
   }
-
-  setCurrentTime();
 
   const updateTime = snapshot => (
     $timeout().then(() => (
@@ -95,9 +91,7 @@ var app = angular
   }
 
   main.switchToMain = function () {
-    // if (main.currentUserId != undefined) {
       $timeout().then(() => {$location.path("/main");})
-    // }
   }
 
   main.reset = function () {
@@ -114,20 +108,17 @@ var app = angular
 
         for (obj in goals) {
           if (goals[obj].complete == true) {
-            //console.log("that goal has been completed")
             firebase.database().ref(`/goals/${obj}`)
               .transaction(goal => {
                 function numberTrue(value){
                   return value == true
                 }
                 let trues = goal.record.filter(numberTrue)
-
-                //goal.record.push(goal.complete)
                 goal.complete = false;
                 goal.percentComplete = Math.round((trues.length / (goal.record.length - 1)) * 100);
                 return goal
               })
-                //console.log(goal.record)
+
           } else {
             firebase.database().ref(`/goals/${obj}`)
               .transaction(goal => {
@@ -135,7 +126,6 @@ var app = angular
                   return value == true
                 }
                 let trues = goal.record.filter(numberTrue);
-
                 goal.record.push(goal.complete);
                 goal.complete = false;
                 goal.percentComplete = Math.round((trues.length / (goal.record.length - 1)) * 100);
@@ -144,14 +134,13 @@ var app = angular
           }
         }
       } else {
-        // console.log(false)
+        console.log(false);
       }
     })
   }
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        // console.log(user.email)
         main.currentUserId = user.uid;
         main.currentUserEmail= user.email;
     }
@@ -168,8 +157,6 @@ var app = angular
             "n": goals[obj].percentComplete
           };
           allGoals.goals.push(goalobj);
-          // console.log(goalobj)
-          //console.log(allGoals)
         } else {
           console.log(false);
         }
@@ -178,9 +165,9 @@ var app = angular
       d3.select(".allGoalsChart")
         .selectAll("div")
           .data(allGoals.goals)
-        .enter().append("div")
-          .style("width", function(d) { return d.n * 4 + "px"; })
-          .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
+            .enter().append("div")
+              .style("width", function(d) { return d.n * 4 + "px"; })
+                .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
     }
 
     main.loadCategorizedGoals = function () {
@@ -192,7 +179,6 @@ var app = angular
       let physicalObj;
       let workObj;
       let personalObj;
-
 
       for (obj in goals) {
         if (goals[obj].category == "physical" && goals[obj].userId == main.currentUserId) {
@@ -228,25 +214,24 @@ var app = angular
 				console.log("physicalObj does not exist");
 			}
 
-			if (workObj){
+      if (workObj){
 				catObj.goals.push(workObj);
 			} else {
 				console.log("workObj does not exist");
 			}
 
-			if (personalObj){
+      if (personalObj){
 				catObj.goals.push(personalObj);
 			} else {
 				console.log("personalObj does not exist");
 			}
 
-
       d3.select(".categoriesChart")
-    .selectAll("div")
-      .data(catObj.goals)
-    .enter().append("div")
-      .style("width", function(d) { return d.n * 4 + "px"; })
-      .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
+        .selectAll("div")
+          .data(catObj.goals)
+            .enter().append("div")
+              .style("width", function(d) { return d.n * 4 + "px"; })
+                .text(function(d) { return `${d.label}- ${Math.floor(d.n)}%` });
     }
 
     main.loadPriorityGoals = function () {
@@ -304,25 +289,19 @@ var app = angular
 			} else {
 				console.log("highObj does not exist");
 			}
-			// priorityObj.goals.push(lowObj)
-      // priorityObj.goals.push(normalObj)
-      // priorityObj.goals.push(highObj)
-      // console.log(priorityObj)
 
       d3.select(".priorityChart")
-    .selectAll("div")
-      .data(priorityObj.goals)
-    .enter().append("div")
-      .style("width", function(d) { return d.n * 4 + "px"; })
-      .text(function(d) { return `${d.label} priority- ${Math.floor(d.n)}%` });
+        .selectAll("div")
+          .data(priorityObj.goals)
+            .enter().append("div")
+              .style("width", function(d) { return d.n * 4 + "px"; })
+                .text(function(d) { return `${d.label} priority- ${Math.floor(d.n)}%` });
     }
     main.loadAllGoals();
     main.loadPriorityGoals();
     main.loadCategorizedGoals();
   }
-
-
-
+  setCurrentTime();
   firebase.database().ref('/goals/').on('child_added', updateGoals);
   firebase.database().ref('/goals/').on('child_changed', updateGoals);
   firebase.database().ref('/goals/').on('child_removed', updateGoals);
