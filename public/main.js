@@ -12,11 +12,14 @@ var app = angular
     main.heading = "Lifetracker";
     main.loginHeader = "login";
 
+  // sets the current time in firebase. This time is compared to the inceptionTime (also in firebase
+  //to see if the goals need to be reset.
   const setCurrentTime = () => {
     firebase.database().ref('/time/')
       .update({"currentTime": Date.now()})
   }
 
+  // allows updating of time in firebase when a goal object is added or deleted.
   const updateTime = snapshot => (
     $timeout().then(() => (
       main.time = Object.assign(
@@ -27,6 +30,7 @@ var app = angular
     ))
   )
 
+  //updates main.goals(an object containing all goals) whenever a goal is added, deleted, or changed
   const updateGoals = (snapshot) => (
     $timeout().then(() => (
       main.goals = Object.assign(
@@ -37,6 +41,8 @@ var app = angular
     ))
   )
 
+  // whenever a goal is marked "complete", a true value is pushed to the firebase goal object's records,
+  // which is a collection of trues or falses used for calculating the total completedness
   main.completeGoal = function (key) {
     return firebase.database().ref(`/goals/${key}`)
       .transaction(goal => {
@@ -46,10 +52,12 @@ var app = angular
       })
   };
 
+  // deletes goal object from firebase
   main.deleteGoal = function (key) {
     firebase.database().ref(`/goals/${key}`).remove();
   }
 
+  // creates firebase goal object from form data. updates current time
   main.submitGoal = function () {
     firebase.database().ref('/goals/').push(
       {
@@ -72,17 +80,20 @@ var app = angular
       setCurrentTime();
 	}
 
+  // authentication with firebase methods (existing user)
   main.login = function (email, password) {
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {main.switchToMain()})
   }
 
+  //account creation and authentication with firebase methods (new user)
 	main.register = function (email, password) {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {firebase.auth().signInWithEmailAndPassword(email, password)})
     .then(() => {main.switchToMain()})
 	}
 
+  // log out of current account and redirect to login page
   main.logout = function () {
     firebase.auth().signOut().then(function(){console.log("sign out success");
     })
@@ -90,14 +101,19 @@ var app = angular
     $location.path('/');
   }
 
+  // redirect to main goal page
   main.switchToMain = function () {
       $timeout().then(() => {$location.path("/main");})
   }
 
+  // function that "resets" the clock and records completedness of all goals for that day
   main.reset = function () {
+    // save current time
     firebase.database().ref('/time/').once('value').then(function(snapshot) {
       main.time = snapshot.val();
 
+      //compares curent time to inception time. inception time was set when the application
+      //was created, and is updated every time a day has passed
       if (main.time.currentTime > main.time.inceptionTime) {
         let goals = main.goals;
         firebase.database().ref(`/time/`)
@@ -106,6 +122,7 @@ var app = angular
                 return time
               })
 
+        // updates all goal objects in firebase      
         for (obj in goals) {
           if (goals[obj].complete == true) {
             firebase.database().ref(`/goals/${obj}`)
@@ -134,9 +151,9 @@ var app = angular
           }
         }
       } else {
-        console.log(false);
+        console.log("a day has not passed yet");
       }
-    })
+   })
   }
 
   firebase.auth().onAuthStateChanged((user) => {
