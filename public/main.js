@@ -30,16 +30,34 @@ var app = angular
     ))
   )
 
+
+  // for testing, also delete line 327-8
+  const showGoals = () => {
+    console.log(main.goals);
+  }
+
   //updates main.goals(an object containing all goals) whenever a goal is added, deleted, or changed
-  const updateGoals = (snapshot) => (
-    $timeout().then(() => (
+  // const updateGoals = (snapshot) => (
+  //   $timeout().then(() => (
+  //     main.goals = Object.assign(
+  //       {},
+  //       main.goals,
+  //       { [snapshot.key]: snapshot.val() }
+  //     )
+  //   ))
+  // )
+
+  updateGoals = function (snapshot) {
+    //console.log("goals updated!!!!");
+    $timeout().then(()=> (
       main.goals = Object.assign(
         {},
         main.goals,
         { [snapshot.key]: snapshot.val() }
       )
     ))
-  )
+    //console.log(main.goals);
+  }
 
   // whenever a goal is marked "complete", a true value is pushed to the firebase goal object's records,
   // which is a collection of trues or falses used for calculating the total completedness
@@ -55,6 +73,16 @@ var app = angular
   // deletes goal object from firebase
   main.deleteGoal = function (key) {
     firebase.database().ref(`/goals/${key}`).remove();
+    // console.log(main.goals)
+    // console.log(key);
+    // console.log(main.goals[key]);
+    // console.log(main.goals.indexOf(key));
+    // console.log("GOAL DELETED")
+    // delete main.goals[key];
+    // console.log(main.goals[key])
+    // return main.goals
+
+
   }
 
   // creates firebase goal object from form data. updates current time
@@ -122,7 +150,7 @@ var app = angular
                 return time
               })
 
-        // updates all goal objects in firebase      
+        // updates all goal objects in firebase
         for (obj in goals) {
           if (goals[obj].complete == true) {
             firebase.database().ref(`/goals/${obj}`)
@@ -317,6 +345,9 @@ var app = angular
     main.loadAllGoals();
     main.loadPriorityGoals();
     main.loadCategorizedGoals();
+
+    //for testing
+    showGoals();
   }
   setCurrentTime();
   firebase.database().ref('/goals/').on('child_added', updateGoals);

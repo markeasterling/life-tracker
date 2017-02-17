@@ -65,7 +65,7 @@
   </div>
 
   <div class="container-fluid">
-    <div  ng-class="{ 'complete': goal.complete == true }" class="goalbox col-sm-3" ng-repeat="goal in main.goals | toArray:true | orderBy: 'complete' | where:{userId: main.currentUserId}">
+    <div  ng-class="{ 'complete': goal.complete == true, 'dead': goal.complete == deleted }" class="goalbox col-sm-3" ng-repeat="goal in main.goals | toArray:true | where:{userId: main.currentUserId}">
       <div class="goaltitle" ng-click="main.showGoal(goal.$key)">{{goal.title}}</div>
       <div ng-hide="goal.complete == true">
         <div class="frequency-importance-box">
@@ -90,14 +90,15 @@
         <div>You complete this {{goal.percentComplete}}% of the time.</div>
       </div>
       <div>{{goal.goalFrequency}}</div>
-      <div >
+      <div>
         <button class="btn btn-xs btn-custom" ng-click="main.completeGoal(goal.$key)">Complete</button>
         <button class="btn btn-xs btn-custom" ng-click="main.deleteGoal(goal.$key)">Delete</button>
       </div>
     </div>
   </div>
 
-    
+
+
 
 
 

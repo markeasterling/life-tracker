@@ -124,3 +124,7 @@ h1 {
 .complete{
   opacity: .5
 }
+
+.deleted {
+	opacity: .5
+}
