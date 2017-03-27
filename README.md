@@ -26,4 +26,4 @@ When a user completes a daily goal, they can mark it as complete.
 
 Users can check their progress visually with charts! 
 
-![image of goal charts] (https://github.com/markeasterling/life-tracker/blob/master/img/charts.png)
+![image of goal charts](https://github.com/markeasterling/life-tracker/blob/master/img/charts.png)
